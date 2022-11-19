@@ -1,0 +1,16 @@
+{
+    "line_range": {
+        "start": 1,
+        "end": 2
+    },
+    "column_mapping" : [
+        {
+            "src": 1,
+            "dst": 2
+        },
+        {
+            "src": 2,
+            "dst": 3
+        }
+    ]
+}
