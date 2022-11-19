@@ -80,9 +80,9 @@ Class CsvFileIo
         $this->linenum++;
     }
 
-    public function dump()
+    public function dump($dump_filepath = "./dump.csv")
     {
-        $fp = fopen("./dump.csv", "w");
+        $fp = fopen($dump_filepath, "w");
         foreach ($this->lines as $fields) {
             fputcsv($fp, $fields);
         }

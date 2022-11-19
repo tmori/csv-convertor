@@ -3,14 +3,18 @@ require('utils/json_loader.php');
 require('utils/CsvFileIo.php');
 
 
-if ($argc != 4) {
-    print("USAGE: " . $argv[0] . " <map-json> <src-csv> <dst-csv>\n");
+if (($argc != 4) && ($argc != 5)) {
+    print("USAGE: " . $argv[0] . " <map-json> <src-csv> <dst-csv> [dump-path]\n");
     return 1;
 }
 
 $map_json=$argv[1];
 $src_csv=$argv[2];
 $dst_csv=$argv[3];
+$dump_path = NULL;
+if ($argc == 5) {
+    $dump_path = $argv[4];
+}
 
 $json_array = load_json($map_json);
 
@@ -38,6 +42,11 @@ for ($i = $range_start; $i <= $range_end; $i++) {
         $dst_csv_obj->set_value($i, $dst_inx, $src_value);
     }
 }
-$dst_csv_obj->dump();
+if (is_null($dump_path)) {
+    $dst_csv_obj->dump();
+}
+else {
+    $dst_csv_obj->dump($dump_path);
+}
 
 ?>
