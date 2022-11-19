@@ -16,6 +16,9 @@ Class CsvFileIo
     private function load()
     {
         $handle = fopen($this->filepath, "r");
+        if ($handle == false) {
+            throw new Exception('ERROR: can not find file: ' . $this->filepath);
+        }
         $this->linenum = 0;
         while($line = fgetcsv($handle)) {
             #print(var_dump($line));
@@ -37,7 +40,7 @@ Class CsvFileIo
     {
         $row_int = (int)$row;
         if ($row_int >= $this->linenum) {
-            return NULL;
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
         }
         return $this->lines[$row_int];
     }
@@ -46,10 +49,10 @@ Class CsvFileIo
         $row_int = (int)$row;
         $index_int = (int)$index;
         if ($row_int >= $this->linenum) {
-            return NULL;
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
         }
         if ($index_int >= $this->colnum) {
-            return NULL;
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
         }
         return $this->lines[$row_int][$index_int];
     }
@@ -58,10 +61,10 @@ Class CsvFileIo
         $row_int = (int)$row;
         $index_int = (int)$index;
         if ($row_int >= $this->linenum) {
-            return NULL;
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
         }
         if ($index_int >= $this->colnum) {
-            return NULL;
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
         }
         $this->lines[$row_int][$index_int] = $value;
     }
@@ -83,6 +86,9 @@ Class CsvFileIo
     public function dump($dump_filepath = "./dump.csv")
     {
         $fp = fopen($dump_filepath, "w");
+        if ($fp == false) {
+            throw new Exception('ERROR: can open file: ' . $dump_filepath);
+        }
         foreach ($this->lines as $fields) {
             fputcsv($fp, $fields);
         }
