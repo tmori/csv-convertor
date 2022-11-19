@@ -94,6 +94,19 @@ Class CsvFileIo
         }
         fclose($fp);        
     }
+    public function get_row($start_line, $keyword, $index)
+    {
+        $index_int = (int)$index;
+        if ($index_int >= $this->colnum) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        }
+        for ($i = $start_line; $i < $this->linenum; $i++) {
+            if (strcmp($keyword, $this->value($i, $index)) == 0) {
+                return $i;
+            }
+        }
+        throw new Exception('ERROR: not found keyword=' . $keyword . " index=" . strval($index) . "\n");
+    }
 }
 
 
