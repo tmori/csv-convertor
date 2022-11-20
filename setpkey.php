@@ -31,12 +31,13 @@ $base_id = $json_array["base_id"];
 $start_line = $json_array["start_line"];
 $parent_pkey_col = $json_array["parent_pkey_col"];
 $child_fkey_col = $json_array["child_fkey_col"];
+$child_pkey_col = $json_array["child_pkey_col"];
 
 for ($i = $start_line; $i < $child_csv_obj->linenum(); $i++) {
     $keyword = $child_csv_obj->value($i, $child_fkey_col);
     $row_id = $parent_csv_obj->get_row($start_line, $keyword, $parent_pkey_col);
     $pkey_id = $row_id + $base_id;
-    $child_csv_obj->set_value($i, $child_fkey_col, $pkey_id);
+    $child_csv_obj->set_value($i, $child_pkey_col, $pkey_id);
 }
 
 if (is_null($dump_path)) {
