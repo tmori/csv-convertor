@@ -164,17 +164,48 @@ col1,col2,col3,col4,col5
 ツール実行方法は以下のとおりです。
 
 ```
-php ./cp_by_pkey.php ./config/pkey.json ./data/pkey/test-data-parent.csv ./data/pkey/test-data-child.csv 
+php ./diff.php ./config/table-pkey.json ./data/diff/old.csv ./data/diff/new.csv ./diff_csv
 ```
 
-成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
+成功すると、以下のファイルが、カレントディレクトリ直下に生成され、差分情報が出力されます。
 
+### update-old.csv
+変更行で修正前のデータ一覧が出力されます。
 ```csv
-col1,col2,col3,col4,col5
-5,child1-2,99184,child1-4,child1-5
-2,child2-2,99183,child2-4,child2-5
-1,child3-2,99182,child3-4,child3-5
+p1,p2,col1,col2,col3
+1,9920,data1-1,data1-2,data1-3
 ```
+
+### update-new.csv
+変更行で修正後のデータ一覧が出力されます。
+```csv
+p1,p2,col1,col2,col3
+1,9920,data1-1,data1-2,data1-updated
+```
+### create.csv
+修正後に追加されたデータ一覧が出力されます。
+```csv
+p1,p2,col1,col2,col3
+3,9920,created-1,created-2,created-3
+```
+
+### delete.csv
+修正後に削除されたデータ一覧が出力されます。
+```csv
+p1,p2,col1,col2,col3
+1,9921,delete-1,delete-2,delete-3
+```
+
+### same.csv
+変更がなかったデータ一覧が出力されます。
+```csv
+p1,p2,col1,col2,col3
+2,9920,data3-1,data3-2,data3-3
+2,9921,data4-1,data4-2,data4-3
+```
+
+
+
 ## complex_convert.php
 
 
