@@ -91,9 +91,9 @@ dst3-1,dst3-2,src3-2,src3-3,dst3-5
 {
     "start_line": 1,
     "parent_pkey_col": 1,
-    "parent_ref_col": 0,
+    "parent_src_col": 0,
     "child_fkey_col": 2,
-    "child_pkey_col": 0
+    "child_dst_col": 0
 }
 ```
 
