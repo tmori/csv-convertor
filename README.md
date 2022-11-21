@@ -38,7 +38,7 @@ CSVファイルの特定列のデータを別のCSVファイルの特定列に�
 {
     "line_range": {
         "start": 1,
-        "end": 2
+        "end": -1
     },
     "column_mapping" : [
         {
@@ -59,7 +59,7 @@ CSVファイルの特定列のデータを別のCSVファイルの特定列に�
   * コピーする列情報を `src`, `dst` で指定します。
   * 複数列を指定したい場合は、それらのデータを列挙します。
 
-イメージを膨らめせるために、サンプルデータをいかに用意しています。
+イメージを膨らめせるために、サンプルデータを以下に用意しています。
 
 * コピー元データ
   * https://github.com/tmori/csv-convertor/blob/main/data/test-data-src.csv
