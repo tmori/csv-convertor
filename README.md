@@ -172,14 +172,14 @@ php ./diff.php ./config/table-pkey.json ./data/diff/old.csv ./data/diff/new.csv 
 成功すると、以下のファイルが、カレントディレクトリ直下に生成され、差分情報が出力されます。
 
 ### update-old.csv
-変更行で修正前のデータ一覧が出力されます。
+変更があった行を出力します。ただし、出力されるのは修正前のデータ一覧となります。
 ```csv
 p1,p2,col1,col2,col3
 1,9920,data1-1,data1-2,data1-3
 ```
 
 ### update-new.csv
-変更行で修正後のデータ一覧が出力されます。
+変更があった行を出力します。ただし、出力されるのは修正後のデータ一覧となります。
 ```csv
 p1,p2,col1,col2,col3
 1,9920,data1-1,data1-2,data1-updated
