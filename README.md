@@ -255,8 +255,11 @@ p1,p2,col1,col2,col3
 * conv_mapping
   * 様々な合成するための情報を列挙します。現時点では以下のものがあります。
     * conv_type=normal
+      * 入力元の列を`src`で、出力先の列を`dst`で指定すると、そのままコピーされます。
     * conv_type=split
+      * 入力元の列`src`の値をキーワード`split_key`で分割し、`split_index`番目の値を`dst`の列にコピーします。
     * conv_type=combine
+      * 入力元の列`srcs`の値(2個のみ)をキーワード`combine_format`でマージして、``dst`の列にコピーします。
 
 イメージを膨らめせるために、サンプルデータを以下に用意しています。
 
