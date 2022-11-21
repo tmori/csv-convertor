@@ -28,6 +28,9 @@ print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 
 $range_start = $json_array["line_range"]["start"];
 $range_end = $json_array["line_range"]["end"];
+if ($range_end < 0) {
+    $range_end = $src_csv_obj->linenum() - 1;
+}
 print("INFO: copy start line =" . strval($range_start) . "\n");
 print("INFO: copy end   line =" . strval($range_end) . "\n");
 
