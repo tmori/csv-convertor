@@ -7,7 +7,7 @@
 
 現実点でのツールとしては、以下があります。
 
-* convert.php
+* cp_normal.php
 * cp_by_pkey.php
 * diff.php
 * complex_convert.php
@@ -29,7 +29,7 @@ sudo apt install php8.1-cli
 sudo apt-get install php-mbstring
 ```
 
-## convert.php
+## cp_normal.php
 
 CSVファイルの特定列のデータを別のCSVファイルの特定列にコピーします。
 なお、コピーするための様々なパラメータは以下の書式で定義します。
@@ -62,14 +62,14 @@ CSVファイルの特定列のデータを別のCSVファイルの特定列に�
 イメージを膨らめせるために、サンプルデータを以下に用意しています。
 
 * コピー元データ
-  * https://github.com/tmori/csv-convertor/blob/main/data/test-data-src.csv
+  * https://github.com/tmori/csv-convertor/blob/main/data/normal/test-data-src.csv
 * コピー先データ
-  * https://github.com/tmori/csv-convertor/blob/main/data/test-data-dst.csv
+  * https://github.com/tmori/csv-convertor/blob/main/data/normal/test-data-dst.csv
 
 ツール実行方法は以下のとおりです。
 
 ```
-php ./convert.php ./config/conv.json ./data/test-data-src.csv ./data/test-data-dst.csv 
+ php ./cp_normal.php ./config/cp-normal.json ./data/normal/test-data-src.csv ./data/normal/test-data-dst.csv 
 ```
 
 成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
