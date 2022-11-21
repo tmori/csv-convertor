@@ -132,7 +132,17 @@ Class CsvFileIo
         }
         return $pkey;
     }
-
+    public function get_value_by_pkey($start_line, $pkey_columns, $pkey)
+    {
+        $start_line_int = (int)$start_line;
+        for ($i = $start_line_int; $i < $this->linenum(); $i++) {
+            $mykey = $this->get_pkeys($i, $pkey_columns);
+            if (strcmp($pkey, $mykey) == 0) {
+                return $i;
+            }
+        }
+        throw new Exception('ERROR: Not found pkey is found in row  pkey=' . $pkey);
+    }
     public function diff($pkey_columns, $start_line, $new_csv_obj, $dump_dir)
     {
         $start_line_int = (int)$start_line;
