@@ -139,7 +139,8 @@ Class CsvFileIo
         $this->dump($dump_dir . "/same.csv");
         $this->dump($dump_dir . "/create.csv");
         $this->dump($dump_dir . "/delete.csv");
-        $this->dump($dump_dir . "/update.csv");
+        $this->dump($dump_dir . "/update-old.csv");
+        $this->dump($dump_dir . "/update-new.csv");
         
         $same_csv_obj = new CsvFileIo($dump_dir . "/same.csv");
         $same_csv_obj->splice_all(1);
@@ -147,8 +148,10 @@ Class CsvFileIo
         $create_csv_obj->splice_all(1);
         $delete_csv_obj = new CsvFileIo($dump_dir . "/delete.csv");
         $delete_csv_obj->splice_all(1);
-        $update_csv_obj = new CsvFileIo($dump_dir . "/update.csv");
-        $update_csv_obj->splice_all(1);
+        $update_old_csv_obj = new CsvFileIo($dump_dir . "/update-old.csv");
+        $update_old_csv_obj->splice_all(1);
+        $update_new_csv_obj = new CsvFileIo($dump_dir . "/update-new.csv");
+        $update_new_csv_obj->splice_all(1);
         
         for ($i = $start_line_int; $i < $this->linenum(); $i++) {
             $is_found = false;
@@ -161,7 +164,8 @@ Class CsvFileIo
                         $same_csv_obj->insert($this->line($i));
                     }
                     else {
-                        $update_csv_obj->insert($new_csv_obj->line($j));
+                        $update_old_csv_obj->insert($this->line($i));
+                        $update_new_csv_obj->insert($new_csv_obj->line($j));
                     }
                     $is_found = true;
                     break;
@@ -189,7 +193,8 @@ Class CsvFileIo
         $same_csv_obj->dump($dump_dir . "/same.csv");
         $create_csv_obj->dump($dump_dir . "/create.csv");
         $delete_csv_obj->dump($dump_dir . "/delete.csv");
-        $update_csv_obj->dump($dump_dir . "/update.csv");
+        $update_old_csv_obj->dump($dump_dir . "/update-old.csv");
+        $update_new_csv_obj->dump($dump_dir . "/update-new.csv");
 
         return true;
     }
