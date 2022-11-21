@@ -8,7 +8,7 @@
 現実点でのツールとしては、以下があります。
 
 * convert.php
-* setpkey.php
+* cp_by_pkey.php
 * diff.php
 * complex_convert.php
 
@@ -81,7 +81,7 @@ dst2-1,dst2-2,src2-2,src2-3,dst2-5
 dst3-1,dst3-2,src3-2,src3-3,dst3-5
 ```
 
-## setpky.php
+## cp_by_pkey.php
 
 親子関係のあるCSVファイルがあった場合、子のCSVファイルの各行は、特定列(外部参照キー)で親のCSVファイルの主キーと紐づけているとします。
 本ツールは、その紐づけられた親のCSVファイルの特定列のデータを、子のCSVファイルの特定列にコピーするツールです。
@@ -118,7 +118,7 @@ dst3-1,dst3-2,src3-2,src3-3,dst3-5
 ツール実行方法は以下のとおりです。
 
 ```
-php ./setpkey.php ./config/pkey.json ./data/pkey/test-data-parent.csv ./data/pkey/test-data-child.csv 
+php ./cp_by_pkey.php ./config/pkey.json ./data/pkey/test-data-parent.csv ./data/pkey/test-data-child.csv 
 ```
 
 成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
