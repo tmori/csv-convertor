@@ -71,7 +71,7 @@ Class CsvFileIo
     public function get_empty_line()
     {
         $line = array();
-        for ($i=0; $i<count($line); $i++) {
+        for ($i = 0; $i < $this->colnum(); $i++) {
             array_push($line, "");
         }
         return $line;
