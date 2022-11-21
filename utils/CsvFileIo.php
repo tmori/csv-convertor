@@ -260,6 +260,38 @@ Class CsvFileIo
             }
         }
     }
+    public function add_double_quote()
+    {
+        for ($i = 0; $i < $this->linenum(); $i++) {
+            for ($j = 0; $j < $this->colnum(); $j++) {
+                $value = $this->value($i, $j);
+                $dvalue = sprintf('%s', $value);
+                $this->set_value($i, $j, $dvalue);
+            }
+        }
+    }
+
+    public function dump_with_double_quote($dump_filepath = "./dump.csv")
+    {
+        $fp = fopen($dump_filepath, "w");
+        if ($fp == false) {
+            throw new Exception('ERROR: can open file: ' . $dump_filepath);
+        }
+        for ($i = 0; $i < $this->linenum(); $i++) {
+            $line = '';
+            for ($j = 0; $j < $this->colnum(); $j++) {
+                $value = $this->value($i, $j);
+                if ($j != ($this->colnum() -1)) {
+                    $line .= '"' . $value . '"' . ",";
+                }
+                else {
+                    $line .= '"' . $value .'"' . "\n";
+                }
+            }
+            fwrite($fp, $line);
+        }
+        fclose($fp);        
+    }
 }
 
 
