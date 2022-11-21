@@ -259,7 +259,7 @@ p1,p2,col1,col2,col3
     * conv_type=split
       * 入力元の列`src`の値をキーワード`split_key`で分割し、`split_index`番目の値を`dst`の列にコピーします。
     * conv_type=combine
-      * 入力元の列`srcs`の値(2個のみ)をキーワード`combine_format`でマージして、``dst`の列にコピーします。
+      * 入力元の列`srcs`の値(2個のみ)を`combine_format`の書式でマージして、`dst`の列にコピーします。
 
 イメージを膨らめせるために、サンプルデータを以下に用意しています。
 
