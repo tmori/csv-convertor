@@ -154,15 +154,15 @@ Class CsvFileIo
         $this->dump($dump_dir . "/update-new.csv");
         
         $same_csv_obj = new CsvFileIo($dump_dir . "/same.csv");
-        $same_csv_obj->splice_all(1);
+        $same_csv_obj->splice_all($start_line_int);
         $create_csv_obj = new CsvFileIo($dump_dir . "/create.csv");
-        $create_csv_obj->splice_all(1);
+        $create_csv_obj->splice_all($start_line_int);
         $delete_csv_obj = new CsvFileIo($dump_dir . "/delete.csv");
-        $delete_csv_obj->splice_all(1);
+        $delete_csv_obj->splice_all($start_line_int);
         $update_old_csv_obj = new CsvFileIo($dump_dir . "/update-old.csv");
-        $update_old_csv_obj->splice_all(1);
+        $update_old_csv_obj->splice_all($start_line_int);
         $update_new_csv_obj = new CsvFileIo($dump_dir . "/update-new.csv");
-        $update_new_csv_obj->splice_all(1);
+        $update_new_csv_obj->splice_all($start_line_int);
         
         for ($i = $start_line_int; $i < $this->linenum(); $i++) {
             $is_found = false;
@@ -238,6 +238,27 @@ Class CsvFileIo
             }
         }
         throw new Exception('ERROR: not found keyword=' . $keyword . " index=" . strval($index) . "\n");
+    }
+    public function is_empty($row)
+    {
+        for ($col = 0; $col < $this->colnum(); $col++)
+        {
+            $value = $this->value($row, $col);
+            //https://qiita.com/hirossyi73/items/6e6b9b3ff155a8b05075
+            if ($value) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public function shrink()
+    {
+        for ($i = 0; $i < $this->linenum(); $i++) {
+            if ($this->is_empty($i)) {
+                $this->splice_all($i);
+                break;
+            }
+        }
     }
 }
 

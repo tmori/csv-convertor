@@ -29,6 +29,8 @@ if ($old_csv_obj->colnum() != $new_csv_obj->colnum()) {
     print("ERROR: old-csv's colnum != new-csv's colnum\n");
     return 1;
 }
+$old_csv_obj->shrink();
+$new_csv_obj->shrink();
 
 $old_csv_obj->validate_pkeys($json_array["pkeys"]);
 $new_csv_obj->validate_pkeys($json_array["pkeys"]);
