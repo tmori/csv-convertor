@@ -76,10 +76,28 @@ Class CsvFileIo
         }
         return $line;
     }
+    public function copy($src)
+    {
+        $new_line = $this->get_empty_line();
+        for ($i = 0; $i < $this->colnum(); $i++) {
+            $new_line[$i] = $src[$i];
+        }
+        return $new_line;
+    }
+    public function isEqual($src, $dst)
+    {
+        for ($i = 0; $i < $this->colnum(); $i++) {
+            if (strcmp($src[$i], $dst[$i]) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
     public function insert($line)
     {
         #print(var_dump($line));
-        array_push($this->lines, $line);
+        $new_line = $this->copy($line);
+        array_push($this->lines, $new_line);
         $this->linenum++;
     }
 
@@ -93,6 +111,104 @@ Class CsvFileIo
             fputcsv($fp, $fields);
         }
         fclose($fp);        
+    }
+    public function splice_all($start_line)
+    {
+        $start_line_int = (int)$start_line;
+        $linenum_int = $this->linenum() - $start_line_int;
+        if ($start_line_int >= $this->linenum) {
+            return;
+        }
+        array_splice($this->lines, $start_line_int, $linenum_int);
+        $this->linenum = $start_line_int;
+    }
+    public function get_pkeys($row, $pkey_columns)
+    {
+        $pkey = "";
+        foreach ($pkey_columns as $pkey_col)
+        {
+            $pkey = $pkey . ":" . strval($this->value($row, $pkey_col));
+            #print($pkey . "\n");
+        }
+        return $pkey;
+    }
+
+    public function diff($pkey_columns, $start_line, $new_csv_obj, $dump_dir)
+    {
+        $start_line_int = (int)$start_line;
+        $this->dump($dump_dir . "/same.csv");
+        $this->dump($dump_dir . "/create.csv");
+        $this->dump($dump_dir . "/delete.csv");
+        $this->dump($dump_dir . "/update.csv");
+        
+        $same_csv_obj = new CsvFileIo($dump_dir . "/same.csv");
+        $same_csv_obj->splice_all(1);
+        $create_csv_obj = new CsvFileIo($dump_dir . "/create.csv");
+        $create_csv_obj->splice_all(1);
+        $delete_csv_obj = new CsvFileIo($dump_dir . "/delete.csv");
+        $delete_csv_obj->splice_all(1);
+        $update_csv_obj = new CsvFileIo($dump_dir . "/update.csv");
+        $update_csv_obj->splice_all(1);
+        
+        for ($i = $start_line_int; $i < $this->linenum(); $i++) {
+            $is_found = false;
+            $pkey1 = $this->get_pkeys($i, $pkey_columns);
+            for ($j = $start_line_int; $j < $new_csv_obj->linenum(); $j++) {
+                $pkey2 = $new_csv_obj->get_pkeys($j, $pkey_columns);
+                if (strcmp($pkey1, $pkey2) == 0) {
+                    //update or same
+                    if ($this->isEqual($this->line($i), $new_csv_obj->line($j))) {
+                        $same_csv_obj->insert($this->line($i));
+                    }
+                    else {
+                        $update_csv_obj->insert($new_csv_obj->line($j));
+                    }
+                    $is_found = true;
+                    break;
+                }
+            }
+            if ($is_found == false) {
+                //deleted
+                $delete_csv_obj->insert($this->line($i));
+            }
+        }
+        for ($i = $start_line_int; $i < $new_csv_obj->linenum(); $i++) {
+            $is_found = false;
+            $pkey1 = $new_csv_obj->get_pkeys($i, $pkey_columns);
+            for ($j = $start_line_int; $j < $this->linenum(); $j++) {
+                $pkey2 = $this->get_pkeys($j, $pkey_columns);
+                if (strcmp($pkey1, $pkey2) == 0) {
+                    $is_found = true;
+                }
+            }
+            if ($is_found == false) {
+                //created
+                $create_csv_obj->insert($new_csv_obj->line($i));
+            }
+        }
+        $same_csv_obj->dump($dump_dir . "/same.csv");
+        $create_csv_obj->dump($dump_dir . "/create.csv");
+        $delete_csv_obj->dump($dump_dir . "/delete.csv");
+        $update_csv_obj->dump($dump_dir . "/update.csv");
+
+        return true;
+    }
+
+    public function validate_pkeys($pkey_columns)
+    {
+        for ($i = 0; $i < $this->linenum(); $i++) {
+            $pkey1 = $this->get_pkeys($i, $pkey_columns);
+            for ($j = 0; $j < $this->linenum(); $j++) {
+                if ($j == $i) {
+                    continue;
+                }
+                $pkey2 = $this->get_pkeys($j, $pkey_columns);
+                if (strcmp($pkey1, $pkey2) == 0) {
+                    throw new Exception('ERROR: Invalid table same pkey is found in row ' . strval($i) . ' and ' . strval($j) . ' pkey=' . $pkey1);
+                }
+            }
+        }
+        return true;
     }
     public function get_row($start_line, $keyword, $index)
     {
