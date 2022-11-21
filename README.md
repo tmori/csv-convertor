@@ -132,6 +132,49 @@ col1,col2,col3,col4,col5
 
 ## diff.php
 
+あるCSVファイルを更新しているときに、更新前のCSVファイルと更新後のCSVファイルを与えると差分情報をを出力します。
+この際、比較対象とする行は、主キーをベースに比較します。
+
+利用シーンとしては、CSVファイルを編集し続けると、単なるdiffツールでは差分が見づらいケースがあるので、主キーベースで行比較をしたくなる場合に有効です。
+
+なお、本ツールの様々なパラメータは以下の書式で定義します。
+
+```json
+{
+    "start_line": 1,
+    "pkeys": [
+        0,
+        1
+    ]
+}
+```
+
+* start_line
+  * 差分チェックの開始行を指定します。
+* pkeys
+  * 主キー列番号を列挙します。
+
+イメージを膨らめせるために、サンプルデータを以下に用意しています。
+
+* 変更前のCSVファイル
+  * https://github.com/tmori/csv-convertor/blob/main/data/diff/old.csv
+* 変更後のCSVファイル
+  * https://github.com/tmori/csv-convertor/blob/main/data/diff/new.csv
+  
+ツール実行方法は以下のとおりです。
+
+```
+php ./cp_by_pkey.php ./config/pkey.json ./data/pkey/test-data-parent.csv ./data/pkey/test-data-child.csv 
+```
+
+成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
+
+```csv
+col1,col2,col3,col4,col5
+5,child1-2,99184,child1-4,child1-5
+2,child2-2,99183,child2-4,child2-5
+1,child3-2,99182,child3-4,child3-5
+```
 ## complex_convert.php
 
 
