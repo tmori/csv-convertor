@@ -141,7 +141,8 @@ Class CsvFileIo
                 return $i;
             }
         }
-        throw new Exception('ERROR: Not found pkey is found in row  pkey=' . $pkey);
+        #throw new Exception('ERROR: Not found pkey is found in row  pkey=' . $pkey);
+        return NULL;
     }
     public function diff($pkey_columns, $start_line, $new_csv_obj, $dump_dir)
     {

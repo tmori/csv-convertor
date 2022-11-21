@@ -33,7 +33,17 @@ print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 for ($i = $start_line; $i < $src_csv_obj->linenum(); $i++) {
     $src_pkey = $src_csv_obj->get_pkeys($i, $src_pkeys);
     $dst_row = $dst_csv_obj->get_value_by_pkey($start_line, $dst_pkeys, $src_pkey);
-
+    if (is_null($dst_row)) {
+        $line = $dst_csv_obj->get_empty_line();
+        $p_inx = 0;
+        foreach ($dst_pkeys as $dst_pkey) {
+            $v = $src_csv_obj->value($i, $src_pkeys[$p_inx]);
+            $line[$dst_pkey] = $v;
+            $p_inx++;
+        }
+        $dst_csv_obj->insert($line);
+        $dst_row = $dst_csv_obj->get_value_by_pkey($start_line, $dst_pkeys, $src_pkey);
+    }
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];
         if (strcmp($conv_type, "normal") == 0) {
