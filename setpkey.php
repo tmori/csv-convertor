@@ -27,7 +27,6 @@ print("INFO: SRC COLNUM=" . $parent_csv_obj->colnum() . "\n");
 print("INFO: DST LINENUM=" . $child_csv_obj->linenum() . "\n");
 print("INFO: DST COLNUM=" . $child_csv_obj->colnum() . "\n");
 
-$base_id = $json_array["base_id"];
 $start_line = $json_array["start_line"];
 $parent_pkey_col = $json_array["parent_pkey_col"];
 $child_fkey_col = $json_array["child_fkey_col"];
@@ -36,8 +35,8 @@ $child_pkey_col = $json_array["child_pkey_col"];
 for ($i = $start_line; $i < $child_csv_obj->linenum(); $i++) {
     $keyword = $child_csv_obj->value($i, $child_fkey_col);
     $row_id = $parent_csv_obj->get_row($start_line, $keyword, $parent_pkey_col);
-    $pkey_id = $row_id + $base_id;
-    $child_csv_obj->set_value($i, $child_pkey_col, $pkey_id);
+    $ref_value = $parent_csv_obj->value($row_id, $json_array["parent_ref_col"]);
+    $child_csv_obj->set_value($i, $child_pkey_col, $ref_value);
 }
 
 if (is_null($dump_path)) {
