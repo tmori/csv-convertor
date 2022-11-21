@@ -78,7 +78,7 @@ php ./convert.php ./config/conv.json ./data/test-data-src.csv ./data/test-data-d
 col1,col2,col3,col4,col5
 dst1-1,dst1-2,src1-2,src1-3,dst1-5
 dst2-1,dst2-2,src2-2,src2-3,dst2-5
-dst3-1,dst3-2,dst3-3,dst3-4,dst3-5
+dst3-1,dst3-2,src3-2,src3-3,dst3-5
 ```
 
 
