@@ -1,0 +1,29 @@
+{
+    "src_pkeys": [
+        0
+    ],
+    "dst_pkeys": [
+        1
+    ],
+    "start_line": 1,
+    "conv_mapping" : [
+        {
+            "conv_type": "normal",
+            "src": 2,
+            "dst": 4
+        },
+        {
+            "conv_type": "split",
+            "split_key": "@",
+            "split_index": 0,
+            "src": 2,
+            "dst": 2
+        },
+        {
+            "conv_type": "combine",
+            "combine_format": "%s(st_%s)",
+            "srcs": [ 1, 0 ],
+            "dst": 3
+        }
+    ]
+}
