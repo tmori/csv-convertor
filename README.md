@@ -210,4 +210,72 @@ p1,p2,col1,col2,col3
 
 ## complex_convert.php
 
+本ツールは、主キーベースで連携されたCSVファイルがあった場合に、入力元のCSVファイルの様々な列を合成して、CSVファイルを生成します。
+
+なお、生成のための様々なパラメータは以下の書式で定義します。
+
+```json
+{
+    "src_pkeys": [
+        0
+    ],
+    "dst_pkeys": [
+        1
+    ],
+    "start_line": 1,
+    "conv_mapping" : [
+        {
+            "conv_type": "normal",
+            "src": 2,
+            "dst": 4
+        },
+        {
+            "conv_type": "split",
+            "split_key": "@",
+            "split_index": 0,
+            "src": 2,
+            "dst": 2
+        },
+        {
+            "conv_type": "combine",
+            "combine_format": "%s(st_%s)",
+            "srcs": [ 1, 0 ],
+            "dst": 3
+        }
+    ]
+}
+```
+
+* src_pkeys
+  * 入力元の主キー列を列挙します。
+* dst_pkeys
+  * 出力先の主キー列を列挙します。
+* start_line
+  * 生成開始行を指定します。
+* conv_mapping
+  * 様々な合成するための情報を列挙します。現時点では以下のものがあります。
+    * conv_type=normal
+    * conv_type=split
+    * conv_type=combine
+
+イメージを膨らめせるために、サンプルデータを以下に用意しています。
+
+* 入力元データ
+  * https://github.com/tmori/csv-convertor/blob/main/data/complex/test-data-src.csv
+* 出力先データ
+  * https://github.com/tmori/csv-convertor/blob/main/data/complex/test-data-dst.csv
+
+ツール実行方法は以下のとおりです。
+
+```
+php ./complex_convert.php ./config/complex_conv.json ./data/complex/test-data-src.csv ./data/complex/test-data-dst.csv  
+```
+
+成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
+
+```csv
+id,user_id,user_code,user_name,email
+1,99119,trajiro,寅次郎(st_99119),trajiro@example.com
+,99120,yasujiro,小津安二郎(st_99120),yasujiro@example.com
+```
 
