@@ -1,2 +1,2 @@
-id,user_id,user_code,user_name,email
-1,99119,xxx,xxx,xxxx
+id,user_id,user_code,user_name,email,bool
+1,99119,xxx,xxx,xxxx,xxxx

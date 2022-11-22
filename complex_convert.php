@@ -56,6 +56,13 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $src_value);
         }
+        else if (strcmp($conv_type, "fixed") == 0) {
+            $dst_value = $value["value"];
+            $dst_inx = $value["dst"];
+            print("INFO: SETTING ");
+            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+            $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
+        }
         else if (strcmp($conv_type, "split") == 0) {
             $src_inx = $value["src"];
             $dst_inx = $value["dst"];

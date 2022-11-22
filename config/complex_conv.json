@@ -9,6 +9,11 @@
     "start_line_dst": 1,
     "conv_mapping" : [
         {
+            "conv_type": "fixed",
+            "value": 0,
+            "dst": 5
+        },
+        {
             "conv_type": "normal",
             "src": 2,
             "dst": 4
