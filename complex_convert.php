@@ -21,7 +21,8 @@ $json_array = load_json($map_json);
 $src_csv_obj = new CsvFileIo($src_csv);
 $dst_csv_obj = new CsvFileIo($dst_csv);
 
-$start_line = (int)$json_array["start_line"];
+$start_line_src = (int)$json_array["start_line_src"];
+$start_line_dst = (int)$json_array["start_line_dst"];
 $src_pkeys = $json_array["src_pkeys"];
 $dst_pkeys = $json_array["dst_pkeys"];
 
@@ -30,9 +31,9 @@ print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
 print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
 print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 
-for ($i = $start_line; $i < $src_csv_obj->linenum(); $i++) {
+for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
     $src_pkey = $src_csv_obj->get_pkeys($i, $src_pkeys);
-    $dst_row = $dst_csv_obj->get_value_by_pkey($start_line, $dst_pkeys, $src_pkey);
+    $dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
     if (is_null($dst_row)) {
         $line = $dst_csv_obj->get_empty_line();
         $p_inx = 0;
@@ -42,7 +43,7 @@ for ($i = $start_line; $i < $src_csv_obj->linenum(); $i++) {
             $p_inx++;
         }
         $dst_csv_obj->insert($line);
-        $dst_row = $dst_csv_obj->get_value_by_pkey($start_line, $dst_pkeys, $src_pkey);
+        $dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
     }
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];

@@ -5,7 +5,8 @@
     "dst_pkeys": [
         1
     ],
-    "start_line": 1,
+    "start_line_src": 1,
+    "start_line_dst": 1,
     "conv_mapping" : [
         {
             "conv_type": "normal",
