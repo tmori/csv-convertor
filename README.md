@@ -11,6 +11,7 @@
 * cp_by_pkey.php
 * diff.php
 * complex_convert.php
+* add_double_quote.php
 
 ## 前提とする環境
 
@@ -101,11 +102,11 @@ dst3-1,dst3-2,src3-2,src3-3,dst3-5
   * 子のCSVファイルの開始行を指定します。
 * parent_pkey_col
   * 親の主キー列番号を指定します。
-* parent_ref_col
+* parent_src_col
   * 親のコピー元列番号を指定します。
 * child_fkey_col
   * 子の外部参照キー列番号を指定します。
-* child_pkey_col
+* child_dst_col
   * 子のコピー先列番号を指定します。
 
 イメージを膨らめせるために、サンプルデータを以下に用意しています。
@@ -222,8 +223,14 @@ p1,p2,col1,col2,col3
     "dst_pkeys": [
         1
     ],
-    "start_line": 1,
+    "start_line_src": 1,
+    "start_line_dst": 1,
     "conv_mapping" : [
+        {
+            "conv_type": "fixed",
+            "value": 0,
+            "dst": 5
+        },
         {
             "conv_type": "normal",
             "src": 2,
@@ -250,10 +257,14 @@ p1,p2,col1,col2,col3
   * 入力元の主キー列を列挙します。
 * dst_pkeys
   * 出力先の主キー列を列挙します。
-* start_line
-  * 生成開始行を指定します。
+* start_line_src
+  * 入力元の開始行を指定します。
+* start_line_dst
+  * 出力先の生成開始行を指定します。
 * conv_mapping
   * 様々な合成するための情報を列挙します。現時点では以下のものがあります。
+    * conv_type=fixed
+      * 出力先の列を`dst`で指定すると、`value` の値が設定されます。
     * conv_type=normal
       * 入力元の列を`src`で、出力先の列を`dst`で指定すると、そのままコピーされます。
     * conv_type=split
@@ -277,8 +288,8 @@ php ./complex_convert.php ./config/complex_conv.json ./data/complex/test-data-sr
 成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
 
 ```csv
-id,user_id,user_code,user_name,email
-1,99119,trajiro,寅次郎(st_99119),trajiro@example.com
-,99120,yasujiro,小津安二郎(st_99120),yasujiro@example.com
+id,user_id,user_code,user_name,email,bool
+1,99119,trajiro,寅次郎(st_99119),trajiro@example.com,0
+,99120,yasujiro,小津安二郎(st_99120),yasujiro@example.com,0
 ```
 
