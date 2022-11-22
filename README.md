@@ -293,3 +293,21 @@ id,user_id,user_code,user_name,email,bool
 ,99120,yasujiro,小津安二郎(st_99120),yasujiro@example.com,0
 ```
 
+## add_double_quote.php
+
+本ツールは、単純にCSVファイル内の全データをダブルクォートで括るだけです。
+Exmentのインポート対象ファイルのCSVファイルの書式がこうなっていたので、この機能を作りました。
+
+ツール実行方法は以下のとおりです。
+
+```
+php ./add_double_quote.php ./dump.csv  
+```
+
+成功すると、`dump.csv`ファイルが、カレントディレクトリ直下に生成され、コピー後のデータが出力されます。
+
+```csv
+"id","user_id","user_code","user_name","email","bool"
+"1","99119","trajiro","寅次郎(st_99119)","trajiro@example.com","0"
+"","99120","yasujiro","小津安二郎(st_99120)","yasujiro@example.com","0"
+```
