@@ -91,21 +91,21 @@ dst3-1,dst3-2,src3-2,src3-3,dst3-5
 ```json
 {
     "start_line": 1,
-    "parent_pkey_col": 1,
+    "parent_pkey_cols": [ 1 ],
     "parent_src_col": 0,
-    "child_fkey_col": 2,
+    "child_fkey_cols": [ 2 ],
     "child_dst_col": 0
 }
 ```
 
 * start_line
   * 子のCSVファイルの開始行を指定します。
-* parent_pkey_col
-  * 親の主キー列番号を指定します。
+* parent_pkey_cols
+  * 親の主キー列番号を配列で指定します。
 * parent_src_col
   * 親のコピー元列番号を指定します。
-* child_fkey_col
-  * 子の外部参照キー列番号を指定します。
+* child_fkey_cols
+  * 子の外部参照キー列番号を配列で指定します。
 * child_dst_col
   * 子のコピー先列番号を指定します。
 
