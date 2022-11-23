@@ -90,6 +90,26 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
+        else if (strcmp($conv_type, "combine3") == 0) {
+            $src0_inx = $value["srcs"][0];
+            $src1_inx = $value["srcs"][1];
+            $src2_inx = $value["srcs"][2];
+            $dst_inx = $value["dst"];
+            $src0_value = $src_csv_obj->value($i, $src0_inx);
+            $src1_value = $src_csv_obj->value($i, $src1_inx);
+            $src2_value = $src_csv_obj->value($i, $src2_inx);
+            $combined_value = sprintf(
+                $value["combine_format"], 
+                $src_csv_obj->value($i, $src0_inx),
+                $src_csv_obj->value($i, $src1_inx),
+                $src_csv_obj->value($i, $src2_inx)
+            );
+            print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
+            print("INFO: COPYING src[" . $i . "][" . $src1_inx .  "]='" . $src1_value . "' && ");
+            print("INFO: COPYING src[" . $i . "][" . $src2_inx .  "]='" . $src2_value . "' >> ");
+            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
+            $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
+        }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
