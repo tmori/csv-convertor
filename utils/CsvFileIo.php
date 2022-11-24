@@ -163,7 +163,13 @@ Class CsvFileIo
         $pkey = "";
         foreach ($pkey_columns as $pkey_col)
         {
-            $pkey = $pkey . ":" . strval($this->value($row, $pkey_col));
+            $value = $this->value($row, $pkey_col);
+            if ($value) {
+                $pkey = $pkey . ":" . strval($value);
+            }
+            else {
+                return NULL;
+            }
             #print($pkey . "\n");
         }
         return $pkey;
