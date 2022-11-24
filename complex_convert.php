@@ -31,6 +31,7 @@ print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
 print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
 print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 
+$serial_index = 0;
 for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
     $src_pkey = $src_csv_obj->get_pkeys($i, $src_pkeys);
     $dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
@@ -59,6 +60,13 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         else if (strcmp($conv_type, "fixed") == 0) {
             $dst_value = $value["value"];
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
+            print("INFO: SETTING ");
+            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+            $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
+        }
+        else if (strcmp($conv_type, "serial") == 0) {
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
+            $dst_value = $value["initial_value"] + $serial_index;
             print("INFO: SETTING ");
             print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
@@ -113,7 +121,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
-    }    
+    }
+    $serial_index++;
 }
 
 

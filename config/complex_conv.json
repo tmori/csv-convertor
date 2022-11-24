@@ -14,6 +14,11 @@
             "dst": "bool"
         },
         {
+            "conv_type": "serial",
+            "initial_value": 1,
+            "dst": "id"
+        },
+        {
             "conv_type": "normal",
             "src": "email",
             "dst": "email"
