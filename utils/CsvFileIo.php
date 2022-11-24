@@ -77,6 +77,21 @@ Class CsvFileIo
         }
         return $this->lines[$row_int][$index_int];
     }
+    public function last_value($start_line, $index)
+    {
+        $start_line_int = (int)$start_line;
+        $row_int = $this->linenum() - 1;
+        $index_int = (int)$index;
+        if ($index_int >= $this->colnum) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        }
+        if ($row_int < $start_line_int) {
+            #printf("row_int=%d start_line_int=%d\n", $row_int, $start_line_int);
+            return 0;
+        }
+        #printf("last_value=%d\n", $this->lines[$row_int][$index_int]);
+        return $this->lines[$row_int][$index_int];
+    }
     public function set_value($row, $index, $value)
     {
         $row_int = (int)$row;

@@ -1,9 +1,9 @@
 {
     "src_pkeys": [
-        0
+        "user_id"
     ],
     "dst_pkeys": [
-        1
+        "user_id"
     ],
     "start_line_src": 1,
     "start_line_dst": 1,
@@ -15,7 +15,7 @@
         },
         {
             "conv_type": "serial",
-            "initial_value": 1,
+            "initial_value": -1,
             "dst": "id"
         },
         {

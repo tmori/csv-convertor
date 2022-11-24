@@ -31,6 +31,19 @@ print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
 print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
 print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 
+$initial_value = 1;
+foreach ($json_array["conv_mapping"] as $value) {
+    $conv_type = $value["conv_type"];
+    if (strcmp($conv_type, "serial") == 0) {
+        $initial_value = $value["initial_value"];
+        if ($initial_value < 0) {
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
+            $initial_value = $dst_csv_obj->last_value($start_line_dst, $dst_inx) + 1;
+            #printf("initial_value=%d\n", $initial_value);
+        }
+    }
+}
+
 $serial_index = 0;
 for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
     $src_pkey = $src_csv_obj->get_pkeys($i, $src_pkeys);
@@ -66,10 +79,17 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         }
         else if (strcmp($conv_type, "serial") == 0) {
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
-            $dst_value = $value["initial_value"] + $serial_index;
-            print("INFO: SETTING ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
-            $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
+            $value = $dst_csv_obj->value($dst_row, $dst_inx);
+            if ($value) {
+                #nop
+            }
+            else {
+                $dst_value = $initial_value + $serial_index;
+                print("INFO: SETTING ");
+                print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+                $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
+                $serial_index++;
+            }
         }
         else if (strcmp($conv_type, "split") == 0) {
             $src_inx = $src_csv_obj->colinx($value["src"]);
@@ -122,7 +142,6 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
     }
-    $serial_index++;
 }
 
 
