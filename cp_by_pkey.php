@@ -27,14 +27,15 @@ print("INFO: SRC COLNUM=" . $parent_csv_obj->colnum() . "\n");
 print("INFO: DST LINENUM=" . $child_csv_obj->linenum() . "\n");
 print("INFO: DST COLNUM=" . $child_csv_obj->colnum() . "\n");
 
-$start_line = $json_array["start_line"];
+$start_line_parent = $json_array["start_line_parent"];
+$start_line_child = $json_array["start_line_child"];
 $parent_pkey_cols = $parent_csv_obj->get_colinx_array($json_array["parent_pkey_cols"]);
 $child_fkey_cols = $child_csv_obj->get_colinx_array($json_array["child_fkey_cols"]);
 $child_dst_col = $child_csv_obj->colinx($json_array["child_dst_col"]);
 
-for ($i = $start_line; $i < $child_csv_obj->linenum(); $i++) {
+for ($i = $start_line_child; $i < $child_csv_obj->linenum(); $i++) {
     $keyword = $child_csv_obj->get_pkeys($i, $child_fkey_cols);
-    $row_id = $parent_csv_obj->get_value_by_pkey($start_line, $parent_pkey_cols, $keyword);
+    $row_id = $parent_csv_obj->get_value_by_pkey($start_line_parent, $parent_pkey_cols, $keyword);
     $src_value = $parent_csv_obj->value($row_id, $parent_csv_obj->colinx($json_array["parent_src_col"]));
     $child_csv_obj->set_value($i, $child_dst_col, $src_value);
 }

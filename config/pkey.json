@@ -1,5 +1,6 @@
 {
-    "start_line": 1,
+    "start_line_parent": 1,
+    "start_line_child": 1,
     "parent_pkey_cols": [ "col1" ],
     "parent_src_col": "id",
     "child_fkey_cols": [ "col3" ],
