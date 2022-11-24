@@ -36,6 +36,27 @@ Class CsvFileIo
     {
         return $this->colnum;
     }
+    public function colinx($name)
+    {
+        if (gettype($name) == "integer") {
+            return $name;
+        }
+        for ($i = 0; $i < $this->colnum(); $i++) {
+            $colname = $this->value(0, $i);
+            if (strcmp($colname, $name) == 0) {
+                return $i;
+            }
+        }
+        throw new Exception('ERROR: not found colname=' . $name);
+    }
+    public function get_colinx_array($pkey_columns)
+    {
+        $ret = array();
+        foreach ($pkey_columns as $pkey_col) {
+            array_push($ret, $this->colinx($pkey_col));
+        }
+        return $ret;
+    }
     public function line($row)
     {
         $row_int = (int)$row;

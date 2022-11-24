@@ -23,8 +23,8 @@ $dst_csv_obj = new CsvFileIo($dst_csv);
 
 $start_line_src = (int)$json_array["start_line_src"];
 $start_line_dst = (int)$json_array["start_line_dst"];
-$src_pkeys = $json_array["src_pkeys"];
-$dst_pkeys = $json_array["dst_pkeys"];
+$src_pkeys = $src_csv_obj->get_colinx_array($json_array["src_pkeys"]);
+$dst_pkeys = $dst_csv_obj->get_colinx_array($json_array["dst_pkeys"]);
 
 print("INFO: SRC LINENUM=" . $src_csv_obj->linenum() . "\n");
 print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
@@ -48,8 +48,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];
         if (strcmp($conv_type, "normal") == 0) {
-            $src_inx = $value["src"];
-            $dst_inx = $value["dst"];
+            $src_inx = $src_csv_obj->colinx($value["src"]);
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src_value = $src_csv_obj->value($i, $src_inx);
             $dst_value = $dst_csv_obj->value($i, $dst_inx);
             print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
@@ -58,14 +58,14 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         }
         else if (strcmp($conv_type, "fixed") == 0) {
             $dst_value = $value["value"];
-            $dst_inx = $value["dst"];
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             print("INFO: SETTING ");
             print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
         }
         else if (strcmp($conv_type, "split") == 0) {
-            $src_inx = $value["src"];
-            $dst_inx = $value["dst"];
+            $src_inx = $src_csv_obj->colinx($value["src"]);
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src_value = $src_csv_obj->value($i, $src_inx);
             $dst_value = $dst_csv_obj->value($i, $dst_inx);
             $split_values = explode($value["split_key"], $src_value);
@@ -75,9 +75,9 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $dst_csv_obj->set_value($dst_row, $dst_inx, $split_value);
         }
         else if (strcmp($conv_type, "combine") == 0) {
-            $src0_inx = $value["srcs"][0];
-            $src1_inx = $value["srcs"][1];
-            $dst_inx = $value["dst"];
+            $src0_inx = $src_csv_obj->colinx($value["srcs"][0]);
+            $src1_inx = $src_csv_obj->colinx($value["srcs"][1]);
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src0_value = $src_csv_obj->value($i, $src0_inx);
             $src1_value = $src_csv_obj->value($i, $src1_inx);
             $combined_value = sprintf(
@@ -91,10 +91,10 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
         else if (strcmp($conv_type, "combine3") == 0) {
-            $src0_inx = $value["srcs"][0];
-            $src1_inx = $value["srcs"][1];
-            $src2_inx = $value["srcs"][2];
-            $dst_inx = $value["dst"];
+            $src0_inx = $src_csv_obj->colinx($value["srcs"][0]);
+            $src1_inx = $src_csv_obj->colinx($value["srcs"][1]);
+            $src2_inx = $src_csv_obj->colinx($value["srcs"][2]);
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src0_value = $src_csv_obj->value($i, $src0_inx);
             $src1_value = $src_csv_obj->value($i, $src1_inx);
             $src2_value = $src_csv_obj->value($i, $src2_inx);

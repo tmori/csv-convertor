@@ -36,8 +36,8 @@ print("INFO: copy end   line =" . strval($range_end) . "\n");
 
 for ($i = $range_start; $i <= $range_end; $i++) {
     foreach ($json_array["column_mapping"] as $value) {
-        $src_inx = $value["src"];
-        $dst_inx = $value["dst"];
+        $src_inx = $src_csv_obj->colinx($value["src"]);
+        $dst_inx = $dst_csv_obj->colinx($value["dst"]);
         $src_value = $src_csv_obj->value($i, $src_inx);
         $dst_value = $dst_csv_obj->value($i, $dst_inx);
         print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");

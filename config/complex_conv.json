@@ -11,25 +11,25 @@
         {
             "conv_type": "fixed",
             "value": 0,
-            "dst": 5
+            "dst": "bool"
         },
         {
             "conv_type": "normal",
-            "src": 2,
-            "dst": 4
+            "src": "email",
+            "dst": "email"
         },
         {
             "conv_type": "split",
             "split_key": "@",
             "split_index": 0,
-            "src": 2,
-            "dst": 2
+            "src": "email",
+            "dst": "user_code"
         },
         {
             "conv_type": "combine",
             "combine_format": "%s(st_%s)",
-            "srcs": [ 1, 0 ],
-            "dst": 3
+            "srcs": [ "user_name", "user_id" ],
+            "dst": "user_name"
         }
     ]
 }
