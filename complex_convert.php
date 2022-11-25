@@ -26,10 +26,10 @@ $start_line_dst = (int)$json_array["start_line_dst"];
 $src_pkeys = $src_csv_obj->get_colinx_array($json_array["src_pkeys"]);
 $dst_pkeys = $dst_csv_obj->get_colinx_array($json_array["dst_pkeys"]);
 
-print("INFO: SRC LINENUM=" . $src_csv_obj->linenum() . "\n");
-print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
-print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
-print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
+#print("INFO: SRC LINENUM=" . $src_csv_obj->linenum() . "\n");
+#print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
+#print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
+#print("INFO: DST COLNUM=" . $dst_csv_obj->colnum() . "\n");
 
 $initial_value = 1;
 foreach ($json_array["conv_mapping"] as $value) {
@@ -66,15 +66,15 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src_value = $src_csv_obj->value($i, $src_inx);
             $dst_value = $dst_csv_obj->value($i, $dst_inx);
-            print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+            #print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $src_value);
         }
         else if (strcmp($conv_type, "fixed") == 0) {
             $dst_value = $value["value"];
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
-            print("INFO: SETTING ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+            #print("INFO: SETTING ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
         }
         else if (strcmp($conv_type, "serial") == 0) {
@@ -85,8 +85,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             }
             else {
                 $dst_value = $initial_value + $serial_index;
-                print("INFO: SETTING ");
-                print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
+                #print("INFO: SETTING ");
+                #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
                 $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
                 $serial_index++;
             }
@@ -98,8 +98,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $dst_value = $dst_csv_obj->value($i, $dst_inx);
             $split_values = explode($value["split_key"], $src_value);
             $split_value = $split_values[$value["split_index"]];
-            print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $split_value . "'\n");
+            #print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $split_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $split_value);
         }
         else if (strcmp($conv_type, "combine") == 0) {
@@ -113,9 +113,9 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
                 $src_csv_obj->value($i, $src0_inx),
                 $src_csv_obj->value($i, $src1_inx)
             );
-            print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
-            print("INFO: COPYING src[" . $i . "][" . $src1_inx .  "]='" . $src1_value . "' >> ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
+            #print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
+            #print("INFO: COPYING src[" . $i . "][" . $src1_inx .  "]='" . $src1_value . "' >> ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
         else if (strcmp($conv_type, "combine1") == 0) {
@@ -126,8 +126,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
                 $value["combine_format"], 
                 $src_csv_obj->value($i, $src0_inx)
             );
-            print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
+            #print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
         else if (strcmp($conv_type, "combine3") == 0) {
@@ -144,10 +144,10 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
                 $src_csv_obj->value($i, $src1_inx),
                 $src_csv_obj->value($i, $src2_inx)
             );
-            print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
-            print("INFO: COPYING src[" . $i . "][" . $src1_inx .  "]='" . $src1_value . "' && ");
-            print("INFO: COPYING src[" . $i . "][" . $src2_inx .  "]='" . $src2_value . "' >> ");
-            print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
+            #print("INFO: COPYING src[" . $i . "][" . $src0_inx .  "]='" . $src0_value . "' && ");
+            #print("INFO: COPYING src[" . $i . "][" . $src1_inx .  "]='" . $src1_value . "' && ");
+            #print("INFO: COPYING src[" . $i . "][" . $src2_inx .  "]='" . $src2_value . "' >> ");
+            #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
         else if (strcmp($conv_type, "dst_combine1") == 0) {
@@ -158,8 +158,8 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
                 $value["combine_format"], 
                 $dst_csv_obj->value($dst_row, $dst0_inx)
             );
-            print("INFO: COPYING dst[" . $i . "][" . $dst0_inx .  "]='" . $dst0_value . "' && ");
-            print("dst[" . $dst_row . "][" . $dst0_inx .  "]='" . $combined_value . "'\n");
+            #print("INFO: COPYING dst[" . $i . "][" . $dst0_inx .  "]='" . $dst0_value . "' && ");
+            #print("dst[" . $dst_row . "][" . $dst0_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
         else {

@@ -22,10 +22,10 @@ $json_array = load_json($pkey_json);
 $parent_csv_obj = new CsvFileIo($parent_csv);
 $child_csv_obj = new CsvFileIo($child_csv);
 
-print("INFO: SRC LINENUM=" . $parent_csv_obj->linenum() . "\n");
-print("INFO: SRC COLNUM=" . $parent_csv_obj->colnum() . "\n");
-print("INFO: DST LINENUM=" . $child_csv_obj->linenum() . "\n");
-print("INFO: DST COLNUM=" . $child_csv_obj->colnum() . "\n");
+#print("INFO: SRC LINENUM=" . $parent_csv_obj->linenum() . "\n");
+#print("INFO: SRC COLNUM=" . $parent_csv_obj->colnum() . "\n");
+#print("INFO: DST LINENUM=" . $child_csv_obj->linenum() . "\n");
+#print("INFO: DST COLNUM=" . $child_csv_obj->colnum() . "\n");
 
 $start_line_parent = $json_array["start_line_parent"];
 $start_line_child = $json_array["start_line_child"];
