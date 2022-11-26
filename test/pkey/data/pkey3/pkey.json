@@ -1,0 +1,10 @@
+{
+    "child_file": "./test/pkey/data/pkey3/test-data-child.csv",
+    "parent_file": "./test/pkey/data/pkey3/test-data-parent.csv",
+    "start_line_parent": 1,
+    "start_line_child": 1,
+    "parent_pkey_cols": [ "pkey1", "pkey2", "pkey3" ],
+    "parent_src_col": "src",
+    "child_fkey_cols": [ "fkey1", "fkey2", "fkey3" ],
+    "child_dst_col": "dst"
+}

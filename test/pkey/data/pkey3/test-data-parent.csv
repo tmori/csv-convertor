@@ -1,0 +1,8 @@
+pkey1,pkey2,src,pkey3
+1,1,parent1-2,1
+1,1,parent2-2,2
+2,1,parent3-2,1
+2,1,parent4-2,2
+2,2,parent5-2,1
+3,1,parent6-2,2
+4,1,parent7-2,3

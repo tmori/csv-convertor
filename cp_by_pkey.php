@@ -35,10 +35,16 @@ $child_dst_col = $child_csv_obj->colinx($json_array["child_dst_col"]);
 
 for ($i = $start_line_child; $i < $child_csv_obj->linenum(); $i++) {
     $keyword = $child_csv_obj->get_pkeys($i, $child_fkey_cols);
+    #printf("keyword=%s\n", $keyword);
     if ($keyword) {
         $row_id = $parent_csv_obj->get_value_by_pkey($start_line_parent, $parent_pkey_cols, $keyword);
-        $src_value = $parent_csv_obj->value($row_id, $parent_csv_obj->colinx($json_array["parent_src_col"]));
-        $child_csv_obj->set_value($i, $child_dst_col, $src_value);
+        if ($row_id) {
+            $src_value = $parent_csv_obj->value($row_id, $parent_csv_obj->colinx($json_array["parent_src_col"]));
+            $child_csv_obj->set_value($i, $child_dst_col, $src_value);
+        }
+        else {
+            printf("WARN: not found parent_pkey_cols:%d: keyword=%s\n", $i, $keyword);
+        }
     }
     else {
         printf("WARN: not found child_fkey_cols:%d\n", $i);

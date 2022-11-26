@@ -1,0 +1,8 @@
+fkey1,fkey2,dst,col
+1,1,child1-2,child1-3
+1,2,child2-2,child2-3
+2,1,child3-2,child3-3
+2,2,child4-2,child4-3
+2,3,child5-2,child5-3
+3,1,child6-2,child6-3
+4,1,child7-2,child7-3

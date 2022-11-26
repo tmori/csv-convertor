@@ -40,6 +40,7 @@ Class CsvFileIo
         }
         for ($i = 0; $i < $this->colnum(); $i++) {
             $colname = $this->value(0, $i);
+            #printf("colinx(): colname=%s name=%s\n", $colname, $name);
             if (strcmp($colname, $name) == 0) {
                 return $i;
             }
