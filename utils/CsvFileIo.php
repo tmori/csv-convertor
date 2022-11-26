@@ -4,7 +4,6 @@ Class CsvFileIo
 {
     private $filepath;
     private $lines = array();
-    private $linenum;
     private $colnum;
 
     function __construct($filepath)
@@ -19,18 +18,16 @@ Class CsvFileIo
         if ($handle == false) {
             throw new Exception('ERROR: can not find file: ' . $this->filepath);
         }
-        $this->linenum = 0;
         while($line = fgetcsv($handle)) {
             #print(var_dump($line));
             array_push($this->lines, $line);
-            $this->linenum++;
         }
         fclose($handle);
         $this->colnum = count($this->lines[0]);
     }
     public function linenum()
     {
-        return $this->linenum;
+        return count($this->lines);
     }
     public function colnum()
     {
@@ -60,8 +57,8 @@ Class CsvFileIo
     public function line($row)
     {
         $row_int = (int)$row;
-        if ($row_int >= $this->linenum) {
-            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
+        if ($row_int >= $this->linenum()) {
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
         return $this->lines[$row_int];
     }
@@ -69,8 +66,8 @@ Class CsvFileIo
     {
         $row_int = (int)$row;
         $index_int = (int)$index;
-        if ($row_int >= $this->linenum) {
-            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
+        if ($row_int >= $this->linenum()) {
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
         if ($index_int >= $this->colnum) {
             throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
@@ -96,8 +93,8 @@ Class CsvFileIo
     {
         $row_int = (int)$row;
         $index_int = (int)$index;
-        if ($row_int >= $this->linenum) {
-            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum) . '<= row=' . strval($row));
+        if ($row_int >= $this->linenum()) {
+            throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
         if ($index_int >= $this->colnum) {
             throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
@@ -134,7 +131,6 @@ Class CsvFileIo
         #print(var_dump($line));
         $new_line = $this->copy($line);
         array_push($this->lines, $new_line);
-        $this->linenum++;
     }
 
     public function dump($dump_filepath = "./dump.csv")
@@ -152,11 +148,19 @@ Class CsvFileIo
     {
         $start_line_int = (int)$start_line;
         $linenum_int = $this->linenum() - $start_line_int;
-        if ($start_line_int >= $this->linenum) {
+        if ($start_line_int >= $this->linenum()) {
             return;
         }
         array_splice($this->lines, $start_line_int, $linenum_int);
-        $this->linenum = $start_line_int;
+    }
+    public function splice($start_line, $linenum)
+    {
+        $start_line_int = (int)$start_line;
+        $linenum_int = (int)$linenum;
+        if ($start_line_int >= $this->linenum()) {
+            return;
+        }
+        array_splice($this->lines, $start_line_int, $linenum_int);
     }
     public function get_pkeys($row, $pkey_columns)
     {
@@ -177,7 +181,8 @@ Class CsvFileIo
     public function get_value_by_pkey($start_line, $pkey_columns, $pkey)
     {
         $start_line_int = (int)$start_line;
-        for ($i = $start_line_int; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        for ($i = $start_line_int; $i < $num; $i++) {
             $mykey = $this->get_pkeys($i, $pkey_columns);
             if (strcmp($pkey, $mykey) == 0) {
                 return $i;
@@ -205,11 +210,12 @@ Class CsvFileIo
         $update_old_csv_obj->splice_all($start_line_int);
         $update_new_csv_obj = new CsvFileIo($dump_dir . "/update-new.csv");
         $update_new_csv_obj->splice_all($start_line_int);
-        
-        for ($i = $start_line_int; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        $new_num = $new_csv_obj->linenum();
+        for ($i = $start_line_int; $i < $num; $i++) {
             $is_found = false;
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
-            for ($j = $start_line_int; $j < $new_csv_obj->linenum(); $j++) {
+            for ($j = $start_line_int; $j < $new_num; $j++) {
                 $pkey2 = $new_csv_obj->get_pkeys($j, $pkey_columns);
                 if (strcmp($pkey1, $pkey2) == 0) {
                     //update or same
@@ -229,10 +235,12 @@ Class CsvFileIo
                 $delete_csv_obj->insert($this->line($i));
             }
         }
-        for ($i = $start_line_int; $i < $new_csv_obj->linenum(); $i++) {
+        $new_num = $new_csv_obj->linenum();
+        $num = $this->linenum();
+        for ($i = $start_line_int; $i < $new_num; $i++) {
             $is_found = false;
             $pkey1 = $new_csv_obj->get_pkeys($i, $pkey_columns);
-            for ($j = $start_line_int; $j < $this->linenum(); $j++) {
+            for ($j = $start_line_int; $j < $num; $j++) {
                 $pkey2 = $this->get_pkeys($j, $pkey_columns);
                 if (strcmp($pkey1, $pkey2) == 0) {
                     $is_found = true;
@@ -254,9 +262,10 @@ Class CsvFileIo
 
     public function validate_pkeys($pkey_columns)
     {
-        for ($i = 0; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
-            for ($j = 0; $j < $this->linenum(); $j++) {
+            for ($j = 0; $j < $num; $j++) {
                 if ($j == $i) {
                     continue;
                 }
@@ -274,7 +283,8 @@ Class CsvFileIo
         if ($index_int >= $this->colnum) {
             throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
         }
-        for ($i = $start_line; $i < $this->linenum; $i++) {
+        $num = $this->linenum();
+        for ($i = $start_line; $i < $num; $i++) {
             if (strcmp($keyword, $this->value($i, $index)) == 0) {
                 return $i;
             }
@@ -295,7 +305,8 @@ Class CsvFileIo
     }
     public function shrink()
     {
-        for ($i = 0; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
             if ($this->is_empty($i)) {
                 $this->splice_all($i);
                 break;
@@ -304,7 +315,8 @@ Class CsvFileIo
     }
     public function add_double_quote()
     {
-        for ($i = 0; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
             for ($j = 0; $j < $this->colnum(); $j++) {
                 $value = $this->value($i, $j);
                 $dvalue = sprintf('%s', $value);
@@ -319,7 +331,8 @@ Class CsvFileIo
         if ($fp == false) {
             throw new Exception('ERROR: can open file: ' . $dump_filepath);
         }
-        for ($i = 0; $i < $this->linenum(); $i++) {
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
             $line = '';
             for ($j = 0; $j < $this->colnum(); $j++) {
                 $value = $this->value($i, $j);
