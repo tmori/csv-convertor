@@ -162,6 +162,21 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             #print("dst[" . $dst_row . "][" . $dst0_inx .  "]='" . $combined_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $combined_value);
         }
+        else if (strcmp($conv_type, "cond") == 0) {
+            $switch_cases = $value["switch_cases"];
+            $default_value = $value["default_value"];
+            $src_inx = $src_csv_obj->colinx($value["src"]);
+            $dst_inx = $dst_csv_obj->colinx($value["dst"]);
+            $src_value = $src_csv_obj->value($i, $src_inx);
+            $value = $default_value;
+            foreach ($switch_cases as $case) {
+                if (strcmp($case["cond_v"], $src_value) == 0) {
+                    $value = $case["change_v"];
+                    break;
+                }
+            }
+            $dst_csv_obj->set_value($dst_row, $dst_inx, $value);
+        }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
