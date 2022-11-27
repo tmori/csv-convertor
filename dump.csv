@@ -1,4 +1,4 @@
-dst,col2,fkey,col4,col5
-5,child1-2,99184,child1-4,child1-5
-2,child2-2,99183,child2-4,child2-5
-1,child3-2,99182,child3-4,child3-5
+col1,col2,col3,col4,col5,tmori
+src1-1,src1-2,src1-3,src1-4,src1-5,
+src2-1,src2-2,src2-3,src2-4,src2-5,
+src3-1,src3-2,src3-3,src3-4,src3-5,

@@ -25,6 +25,21 @@ Class CsvFileIo
         fclose($handle);
         $this->colnum = count($this->lines[0]);
     }
+    public function add_col($name)
+    {
+        for ($i = 0; $i < $this->colnum();  $i++) {
+            if (strcmp($this->lines[0][$i], $name) == 0) {
+                throw new Exception('ERROR: overlap colname=' . $name);
+            }
+        }
+        array_push($this->lines[0], $name);
+        $this->colnum++;
+        $num = $this->linenum();
+        for ($i = 1; $i < $num; $i++) {
+            array_push($this->lines[$i], "");
+        }
+        return;
+    }
     public function linenum()
     {
         return count($this->lines);
@@ -70,8 +85,8 @@ Class CsvFileIo
         if ($row_int >= $this->linenum()) {
             throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
-        if ($index_int >= $this->colnum) {
-            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        if ($index_int >= $this->colnum()) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
         }
         return $this->lines[$row_int][$index_int];
     }
@@ -80,8 +95,8 @@ Class CsvFileIo
         $start_line_int = (int)$start_line;
         $row_int = $this->linenum() - 1;
         $index_int = (int)$index;
-        if ($index_int >= $this->colnum) {
-            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        if ($index_int >= $this->colnum()) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
         }
         if ($row_int < $start_line_int) {
             #printf("row_int=%d start_line_int=%d\n", $row_int, $start_line_int);
@@ -97,8 +112,8 @@ Class CsvFileIo
         if ($row_int >= $this->linenum()) {
             throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
-        if ($index_int >= $this->colnum) {
-            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        if ($index_int >= $this->colnum()) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
         }
         $this->lines[$row_int][$index_int] = $value;
     }
@@ -281,8 +296,8 @@ Class CsvFileIo
     public function get_row($start_line, $keyword, $index)
     {
         $index_int = (int)$index;
-        if ($index_int >= $this->colnum) {
-            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum) . '<= col=' . strval($index));
+        if ($index_int >= $this->colnum()) {
+            throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
         }
         $num = $this->linenum();
         for ($i = $start_line; $i < $num; $i++) {
