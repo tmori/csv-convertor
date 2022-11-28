@@ -30,6 +30,16 @@ sudo apt install php8.1-cli
 sudo apt-get install php-mbstring
 ```
 
+`phpoffice/phpspreadsheet`を利用したエクセル変換ツールを利用する場合は、追加で以下のインストールが必要。
+
+```
+sudo apt install php-xml
+sudo apt-get install php-mbstring
+sudo apt install php8.1-gd
+sudo apt-get install php8.1-zip
+sudo apt-get install php-curl
+```
+
 ## cp_normal.php
 
 CSVファイルの特定列のデータを別のCSVファイルの特定列にコピーします。
