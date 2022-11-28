@@ -4,8 +4,8 @@ require('utils/CsvFileIo.php');
 include('./project/vendor/autoload.php');
 require('project/src/CsvToExcel.php');
 
-if (($argc != 4) && ($argc != 5)) {
-    printf("USAGE: %s <csv-file> <excel-file> <start-line> [dump-dir]\n", $argv[0]);
+if ($argc != 4) {
+    printf("USAGE: %s <csv-file> <excel-file> <start-line>\n", $argv[0]);
     return 1;
 }
 $src_csv=$argv[1];
