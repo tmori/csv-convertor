@@ -33,11 +33,16 @@ $parent_pkey_cols = $parent_csv_obj->get_colinx_array($json_array["parent_pkey_c
 $child_fkey_cols = $child_csv_obj->get_colinx_array($json_array["child_fkey_cols"]);
 $child_dst_col = $child_csv_obj->colinx($json_array["child_dst_col"]);
 
+#TODO CHECK
+$parent_csv_obj->create_cache($start_line_parent, $parent_pkey_cols);
+
 for ($i = $start_line_child; $i < $child_csv_obj->linenum(); $i++) {
     $keyword = $child_csv_obj->get_pkeys($i, $child_fkey_cols);
     #printf("keyword=%s\n", $keyword);
     if ($keyword) {
-        $row_id = $parent_csv_obj->get_value_by_pkey($start_line_parent, $parent_pkey_cols, $keyword);
+        #TODO CHECK
+        $row_id = $parent_csv_obj->get_value_by_pkey_with_cache($keyword);
+        #$row_id = $parent_csv_obj->get_value_by_pkey($start_line_parent, $parent_pkey_cols, $keyword);
         if ($row_id) {
             $src_value = $parent_csv_obj->value($row_id, $parent_csv_obj->colinx($json_array["parent_src_col"]));
             $child_csv_obj->set_value($i, $child_dst_col, $src_value);
