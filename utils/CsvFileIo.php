@@ -5,6 +5,7 @@ Class CsvFileIo
     private $filepath;
     private $lines = array();
     private $colnum;
+    private $map_pkeys = array();
 
     function __construct($filepath)
     {
@@ -148,6 +149,12 @@ Class CsvFileIo
         $new_line = $this->copy($line);
         array_push($this->lines, $new_line);
     }
+    public function insert_with_cache($line, $pkey_columns)
+    {
+        $this->insert($line);
+        $pkey = $this->get_pkeys_by_line($line, $pkey_columns);
+        $this->map_pkeys[$pkey] = $this->linenum() - 1;
+    }
 
     public function dump($dump_filepath = "./dump.csv")
     {
@@ -206,6 +213,40 @@ Class CsvFileIo
         }
         #throw new Exception('ERROR: Not found pkey is found in row  pkey=' . $pkey);
         return NULL;
+    }
+    public function get_pkeys_by_line($line, $pkey_columns)
+    {
+        $pkey = "";
+        foreach ($pkey_columns as $pkey_col)
+        {
+            $value = $line[$pkey_col];
+            if ($value) {
+                $pkey = $pkey . ":" . strval($value);
+            }
+            else {
+                return NULL;
+            }
+            #print($pkey . "\n");
+        }
+        return $pkey;
+    }
+    public function create_cache($start_line, $pkey_columns)
+    {
+        $start_line_int = (int)$start_line;
+        $num = $this->linenum();
+        for ($i = $start_line_int; $i < $num; $i++) {
+            $mykey = $this->get_pkeys($i, $pkey_columns);
+            $this->map_pkeys[$mykey] = $i;
+        }
+    }
+    public function get_value_by_pkey_with_cache($pkey)
+    {
+        if (isset($this->map_pkeys[$pkey])) {
+            return $this->map_pkeys[$pkey];
+        }
+        else {
+            return NULL;
+        }
     }
     public function diff($pkey_columns, $start_line, $new_csv_obj, $dump_dir)
     {

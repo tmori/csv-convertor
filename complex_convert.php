@@ -26,6 +26,11 @@ $start_line_dst = (int)$json_array["start_line_dst"];
 $src_pkeys = $src_csv_obj->get_colinx_array($json_array["src_pkeys"]);
 $dst_pkeys = $dst_csv_obj->get_colinx_array($json_array["dst_pkeys"]);
 
+#$src_csv_obj->validate_pkeys($src_csv_obj->get_colinx_array($json_array["src_pkeys"]));
+#$dst_csv_obj->validate_pkeys($dst_csv_obj->get_colinx_array($json_array["dst_pkeys"]));
+
+$dst_csv_obj->create_cache($start_line_dst, $dst_pkeys);
+
 #print("INFO: SRC LINENUM=" . $src_csv_obj->linenum() . "\n");
 #print("INFO: SRC COLNUM=" . $src_csv_obj->colnum() . "\n");
 #print("INFO: DST LINENUM=" . $dst_csv_obj->linenum() . "\n");
@@ -47,7 +52,8 @@ foreach ($json_array["conv_mapping"] as $value) {
 $serial_index = 0;
 for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
     $src_pkey = $src_csv_obj->get_pkeys($i, $src_pkeys);
-    $dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
+    #$dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
+    $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     if (is_null($dst_row)) {
         $line = $dst_csv_obj->get_empty_line();
         $p_inx = 0;
@@ -56,8 +62,10 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $line[$dst_pkey] = $v;
             $p_inx++;
         }
-        $dst_csv_obj->insert($line);
-        $dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
+        $dst_csv_obj->insert_with_cache($line, $dst_pkeys);
+        #$dst_csv_obj->insert($line);
+        #$dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
+        $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     }
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];
