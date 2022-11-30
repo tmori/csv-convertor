@@ -6,6 +6,7 @@ Class CsvFileIo
     private $lines = array();
     private $colnum;
     private $map_pkeys = array();
+    private $pkey_columns = NULL;
 
     function __construct($filepath)
     {
@@ -115,6 +116,13 @@ Class CsvFileIo
         }
         if ($index_int >= $this->colnum()) {
             throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
+        }
+        if ($this->pkey_columns) {
+            foreach ($this->pkey_columns as $pkey_col) {
+                if ($index == $pkey_col) {
+                    throw new Exception('ERROR: can not change pkey data colinx=' . strval($index));
+                }
+            }    
         }
         $this->lines[$row_int][$index_int] = $value;
     }
@@ -232,6 +240,7 @@ Class CsvFileIo
     }
     public function create_cache($start_line, $pkey_columns)
     {
+        $this->pkey_columns = $pkey_columns;
         $start_line_int = (int)$start_line;
         $num = $this->linenum();
         for ($i = $start_line_int; $i < $num; $i++) {
