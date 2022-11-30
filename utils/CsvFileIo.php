@@ -117,13 +117,13 @@ Class CsvFileIo
         if ($index_int >= $this->colnum()) {
             throw new Exception('ERROR: overflow colnum=' . strval($this->colnum()) . '<= col=' . strval($index));
         }
-        if ($this->pkey_columns) {
-            foreach ($this->pkey_columns as $pkey_col) {
-                if ($index == $pkey_col) {
-                    throw new Exception('ERROR: can not change pkey data colinx=' . strval($index));
-                }
-            }    
-        }
+        #if ($this->pkey_columns) {
+        #    foreach ($this->pkey_columns as $pkey_col) {
+        #        if ($index == $pkey_col) {
+        #            throw new Exception('ERROR: can not change pkey data colinx=' . strval($index));
+        #        }
+        #    }    
+        #}
         $this->lines[$row_int][$index_int] = $value;
     }
     public function get_empty_line()
@@ -247,6 +247,16 @@ Class CsvFileIo
             $mykey = $this->get_pkeys($i, $pkey_columns);
             $this->map_pkeys[$mykey] = $i;
         }
+    }
+    public function delete_cache_line($row)
+    {
+        $mykey = $this->get_pkeys($row, $this->pkey_columns);
+        $this->map_pkeys[$mykey] = NULL;
+    }
+    public function set_cache_line($row)
+    {
+        $mykey = $this->get_pkeys($row, $this->pkey_columns);
+        $this->map_pkeys[$mykey] = $row;
     }
     public function get_value_by_pkey_with_cache($pkey)
     {

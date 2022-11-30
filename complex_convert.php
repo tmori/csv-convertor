@@ -67,6 +67,7 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         #$dst_row = $dst_csv_obj->get_value_by_pkey($start_line_dst, $dst_pkeys, $src_pkey);
         $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     }
+    $dst_csv_obj->delete_cache_line($dst_row);
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];
         if (strcmp($conv_type, "normal") == 0) {
@@ -188,6 +189,7 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
+        $dst_csv_obj->set_cache_line($dst_row);
     }
 }
 
