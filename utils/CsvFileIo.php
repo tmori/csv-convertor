@@ -245,6 +245,9 @@ Class CsvFileIo
         $num = $this->linenum();
         for ($i = $start_line_int; $i < $num; $i++) {
             $mykey = $this->get_pkeys($i, $pkey_columns);
+            if (isset($this->map_pkeys[$mykey])) {
+                throw new Exception('ERROR: Invalid table same pkey is found in row ' . strval($i) . ' and ' . strval($this->map_pkeys[$mykey]) . ' pkey=' . $mykey);
+            }
             $this->map_pkeys[$mykey] = $i;
         }
     }
