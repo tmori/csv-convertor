@@ -1,0 +1,15 @@
+{
+    "src_pkeys": [
+        "user_id"
+    ],
+    "dst_pkeys": [
+        "user_id"
+    ],
+    "start_line_src": 1,
+    "start_line_dst": 1,
+    "conv_mapping" : [
+        {
+            "conv_type": "update"
+        }
+    ]
+}

@@ -186,6 +186,10 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             }
             $dst_csv_obj->set_value($dst_row, $dst_inx, $value);
         }
+        else if (strcmp($conv_type, "update") == 0) {
+            $src_line = $src_csv_obj->line($i);
+            $dst_csv_obj->update($dst_row, $src_line);
+        }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }

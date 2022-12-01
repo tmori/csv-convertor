@@ -157,6 +157,13 @@ Class CsvFileIo
         $new_line = $this->copy($line);
         array_push($this->lines, $new_line);
     }
+    public function update($row, $line)
+    {
+        if (count($line) != $this->colnum()) {
+            throw new Exception('ERROR: update failed invalid colnum: ' . strval(count($line)));
+        }
+        $this->lines[$row] = $line;
+    }
     public function insert_with_cache($line, $pkey_columns)
     {
         $this->insert($line);
