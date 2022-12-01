@@ -287,44 +287,34 @@ Class CsvFileIo
         $update_new_csv_obj = new CsvFileIo($dump_dir . "/update-new.csv");
         $update_new_csv_obj->splice_all($start_line_int);
         $num = $this->linenum();
-        $new_num = $new_csv_obj->linenum();
         for ($i = $start_line_int; $i < $num; $i++) {
-            $is_found = false;
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
-            for ($j = $start_line_int; $j < $new_num; $j++) {
-                $pkey2 = $new_csv_obj->get_pkeys($j, $pkey_columns);
-                if (strcmp($pkey1, $pkey2) == 0) {
-                    //update or same
-                    if ($this->isEqual($this->line($i), $new_csv_obj->line($j))) {
-                        $same_csv_obj->insert($this->line($i));
-                    }
-                    else {
-                        $update_old_csv_obj->insert($this->line($i));
-                        $update_new_csv_obj->insert($new_csv_obj->line($j));
-                    }
-                    $is_found = true;
-                    break;
-                }
-            }
-            if ($is_found == false) {
+            $row = $new_csv_obj->get_value_by_pkey_with_cache($pkey1);
+            if (is_null($row)) {
                 //deleted
                 $delete_csv_obj->insert($this->line($i));
             }
+            else {
+                if ($this->isEqual($this->line($i), $new_csv_obj->line($row))) {
+                    $same_csv_obj->insert($this->line($i));
+                }
+                else {
+                    $update_old_csv_obj->insert($this->line($i));
+                    $update_new_csv_obj->insert($new_csv_obj->line($row));
+                }
+            }
         }
         $new_num = $new_csv_obj->linenum();
-        $num = $this->linenum();
         for ($i = $start_line_int; $i < $new_num; $i++) {
             $is_found = false;
             $pkey1 = $new_csv_obj->get_pkeys($i, $pkey_columns);
-            for ($j = $start_line_int; $j < $num; $j++) {
-                $pkey2 = $this->get_pkeys($j, $pkey_columns);
-                if (strcmp($pkey1, $pkey2) == 0) {
-                    $is_found = true;
-                }
-            }
-            if ($is_found == false) {
+            $row = $this->get_value_by_pkey_with_cache($pkey1);
+            if (is_null($row)) {
                 //created
                 $create_csv_obj->insert($new_csv_obj->line($i));
+            }
+            else {
+                //nothing to do
             }
         }
         $same_csv_obj->dump($dump_dir . "/same.csv");

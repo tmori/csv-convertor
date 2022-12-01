@@ -32,8 +32,11 @@ if ($old_csv_obj->colnum() != $new_csv_obj->colnum()) {
 $old_csv_obj->shrink();
 $new_csv_obj->shrink();
 
-$old_csv_obj->validate_pkeys($old_csv_obj->get_colinx_array($json_array["pkeys"]));
-$new_csv_obj->validate_pkeys($new_csv_obj->get_colinx_array($json_array["pkeys"]));
+$old_csv_obj->create_cache($json_array["start_line"], $old_csv_obj->get_colinx_array($json_array["pkeys"]));
+$new_csv_obj->create_cache($json_array["start_line"], $new_csv_obj->get_colinx_array($json_array["pkeys"]));
+
+#$old_csv_obj->validate_pkeys($old_csv_obj->get_colinx_array($json_array["pkeys"]));
+#$new_csv_obj->validate_pkeys($new_csv_obj->get_colinx_array($json_array["pkeys"]));
 
 $old_csv_obj->diff($old_csv_obj->get_colinx_array($json_array["pkeys"]), $json_array["start_line"], $new_csv_obj, $dump_dir);
 
