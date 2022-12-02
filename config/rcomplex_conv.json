@@ -1,0 +1,62 @@
+{
+	"src": {
+        "input": "./data/rcomplex/src-data.csv"
+    },
+    "dsts": [
+        {
+            "out1": {
+                "filepath": "./data/rcomplex/dst-data1.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        },
+        {
+            "out2": {
+                "filepath": "./data/rcomplex/dst-data2.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }    
+        },
+        {
+            "out3": {
+                "filepath": "./data/rcomplex/dst-data3.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        }
+    ],
+    "src_dst_relation": {
+        "src": "input",
+        "src_pkeys": [ "id" ],
+        "dst": "out1",
+        "dst_pkeys": [ "id" ]
+    },
+    "dst_relations": [
+        {
+            "parent": "out1",
+            "parent_colname": "p1",
+            "child": "out2",
+            "child_colname": "id"
+        },
+        {
+            "parent": "out2",
+            "parent_colname": [ "p2" ],
+            "child": "out3",
+            "child_colname": [ "id" ]
+        }
+    ],
+    "conv_mapping": [
+        {
+            "conv_type": "normal",
+            "src": "tell",
+            "dst_path": "out1.out2",
+            "dst": "tell"
+        },
+        {
+            "conv_type": "normal",
+            "src": "email",
+            "dst_path": "out1.out2.out3",
+            "dst": "email"
+        }
+    ]
+}
