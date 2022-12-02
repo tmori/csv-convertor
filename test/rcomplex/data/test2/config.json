@@ -1,0 +1,69 @@
+{
+	"src": {
+        "input": { 
+            "comment": "dsts の第一要素と連携する",
+            "filepath": "./test/rcomplex/data/test2/src.csv",
+            "start_line": 1,
+            "pkeys": [ "id" ] 
+        }
+    },
+    "dsts": [
+        {
+            "out1": {
+                "filepath": "./test/rcomplex/data/test2/input1.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id1" ] 
+            }
+        },
+        {
+            "out2": {
+                "filepath": "./test/rcomplex/data/test2/input2.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id2" ] 
+            }    
+        },
+        {
+            "out3": {
+                "filepath": "./test/rcomplex/data/test2/input3.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id3" ] 
+            }
+        }
+    ],
+    "dst_relations": [
+        {
+            "parent": "out1",
+            "parent_colnames": [ "p1" ],
+            "child": "out2"
+        },
+        {
+            "parent": "out2",
+            "parent_colnames": [ "p2" ],
+            "child": "out3"
+        }
+    ],
+    "conv_mapping": [
+        {
+            "conv_type": "normal",
+            "src": "tell",
+            "dst_path": "out1.out2.tell"
+        },
+        {
+            "conv_type": "normal",
+            "src": "email",
+            "dst_path": "out1.out2.out3.email"
+        },
+        {
+            "conv_type": "combine1",
+            "combine_format": "st_%s",
+            "src": "id",
+            "dst_path": "out1.out2.out3.code"
+        },
+        {
+            "conv_type": "combine2",
+            "combine_format": "%s(st_%s)",
+            "srcs": [ "user_name", "id" ],
+            "dst_path": "out1.out2.out3.name"
+        }
+    ]
+}

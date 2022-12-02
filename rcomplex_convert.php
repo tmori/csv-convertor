@@ -38,13 +38,42 @@ foreach ($json_array["dsts"] as $obj) {
 $relation = new CsvRelation($json_array["dst_relations"], $dst_objs);
 
 for ($i = $json_array["src"][$src_obj_name]["start_line"]; $i < $src_csv_obj->linenum(); $i++) {
+    $src_pkey = $src_csv_obj->get_pkeys($i, $json_array["src"][$src_obj_name]["pkeys"]);
+    $dst_csv_obj = $dst_objs[key($json_array["dsts"][0])];
+    $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
+    #printf("dst_row=%s\n", $dst_row);
+    if (is_null($dst_row)) {
+        throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
+    }
     foreach ($json_array["conv_mapping"] as $value) {
         $conv_type = $value["conv_type"];
         if (strcmp($conv_type, "normal") == 0) {
             $src_inx = $src_csv_obj->colinx($value["src"]);
             $dst_path = $value["dst_path"];
             $src_value = $src_csv_obj->value($i, $src_inx);
-            $relation->set_value($i, $dst_path, $src_value);
+            $relation->set_value($dst_row, $dst_path, $src_value);
+        }
+        else if (strcmp($conv_type, "combine1") == 0) {
+            $src_inx = $src_csv_obj->colinx($value["src"]);
+            $dst_path = $value["dst_path"];
+            $src_value = $src_csv_obj->value($i, $src_inx);
+            $combined_value = sprintf(
+                $value["combine_format"], 
+                $src_value
+            );
+            $relation->set_value($dst_row, $dst_path, $combined_value);
+        }
+        else if (strcmp($conv_type, "combine2") == 0) {
+            $src0_inx = $src_csv_obj->colinx($value["srcs"][0]);
+            $src1_inx = $src_csv_obj->colinx($value["srcs"][1]);
+            $dst_path = $value["dst_path"];
+            $src0_value = $src_csv_obj->value($i, $src0_inx);
+            $src1_value = $src_csv_obj->value($i, $src1_inx);
+            $combined_value = sprintf(
+                $value["combine_format"], 
+                $src0_value, $src1_value
+            );
+            $relation->set_value($dst_row, $dst_path, $combined_value);
         }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);

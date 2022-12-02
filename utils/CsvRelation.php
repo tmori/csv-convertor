@@ -20,7 +20,6 @@ Class CsvRelation
     private function row($parent_row, $path)
     {
         $path_array = explode('.', $path);
-        $parent = $path_array[0];
         $num = count($path_array);
         $name = $path_array[$num - 1];
         $last_inx = $num - 2;
@@ -33,6 +32,9 @@ Class CsvRelation
             $child_row = $this->objs[$child]->get_value_by_pkey_with_cache($parent_value);
             if ($i == $last_inx) {
                 return $child_row;
+            }
+            else {
+                $paretn_row = $child_row;
             }
         }
         return null;
@@ -58,8 +60,8 @@ Class CsvRelation
         $name = $tmp[count($tmp) - 1];
         $row = $this->row($parent_row, $path);
         if ($row) {
+            #printf("%s(%s)=%s target=%s\n", $path, $name, $value, $target);
             $this->objs[$target]->set_value($row, $this->objs[$target]->colinx($name), $value);
-            #printf("%s.%s=%s\n", $path, $name, $value);
             return $value;
         }
         return NULL;
