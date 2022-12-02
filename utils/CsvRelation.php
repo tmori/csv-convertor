@@ -46,7 +46,7 @@ Class CsvRelation
         $row = $this->row($parent_row, $path);
         if ($row) {
             $value = $this->objs[$target]->value($row, $this->objs[$target]->colinx($name));
-            printf("%s.%s=%s\n", $path, $name, $value);
+            #printf("%s.%s=%s\n", $path, $name, $value);
             return $value;
         }
         return NULL;
@@ -59,7 +59,7 @@ Class CsvRelation
         $row = $this->row($parent_row, $path);
         if ($row) {
             $this->objs[$target]->set_value($row, $this->objs[$target]->colinx($name), $value);
-            printf("%s.%s=%s\n", $path, $name, $value);
+            #printf("%s.%s=%s\n", $path, $name, $value);
             return $value;
         }
         return NULL;
