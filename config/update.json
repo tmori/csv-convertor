@@ -1,0 +1,59 @@
+{
+    "src_pkeys": [
+        "name",
+        "name_kana",
+        "birth"
+    ],
+    "dst_pkeys": [
+        "name",
+        "name_kana",
+        "birth"
+    ],    
+    "conv_mapping" : [
+        {
+            "conv_type": "normal",
+            "src": "student_info.name",
+            "dsts": [
+                "student.name",
+                "student.user.name"
+            ]
+        }
+    ],
+    "src" : {
+        "name": "student_info",
+        "data": {
+            "obj": null,
+            "start_line": 1,
+            "filepath": "./data/update",
+            "filename": "student_info.csv"
+        }
+    },
+    "dsts" : [
+        {
+            "name": "student",
+            "relations": [
+                {
+                    "name": "user",
+                    "fkeys": [ "user" ],
+                    "pkeys": [ "id" ]
+                }
+            ],
+            "data": {
+                "obj": null,
+                "start_line": 1,
+                "filepath": "./data/update",
+                "filename": "student.csv"
+            }
+        },
+        {
+            "name": "user",
+            "relations": null,
+            "data": {
+                "obj": null,
+                "start_line": 1,
+                "filepath": "./data/update",
+                "filename": "user.csv"
+            }
+        }
+    ]
+}

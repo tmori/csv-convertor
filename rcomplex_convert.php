@@ -17,9 +17,9 @@ $json_array = load_json($map_json);
 
 $src_obj_name = key($json_array["src"]);
 #printf("src_obj_name=%s\n", $src_obj_name);
-printf("INFO: src_obj_fpath=%s\n", $json_array["src"][$src_obj_name]);
+printf("INFO: src_obj_fpath=%s\n", $json_array["src"][$src_obj_name]["filepath"]);
 
-$src_csv_obj = new CsvFileIo($json_array["src"][$src_obj_name]);
+$src_csv_obj = new CsvFileIo($json_array["src"][$src_obj_name]["filepath"]);
 $dst_objs = array();
 foreach ($json_array["dsts"] as $obj) {
     $dst_obj_name = key($obj);
@@ -32,8 +32,8 @@ foreach ($json_array["dsts"] as $obj) {
         $obj[$dst_obj_name]["pkeys"]);
 }
 
-$relation = new CsvRelation($json_array["dst_relations"]);
-$relation->get_value(1, $dst_objs, "out1.out2.out3", "email");
+$relation = new CsvRelation($json_array["dst_relations"], $dst_objs);
+$relation->set_value(1, "out1.out2.tell", "tmori");
 #$start_line_src = (int)$json_array["start_line_src"];
 #$start_line_dst = (int)$json_array["start_line_dst"];
 #$src_pkeys = $src_csv_obj->get_colinx_array($json_array["src_pkeys"]);
