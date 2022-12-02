@@ -1,5 +1,5 @@
 {
-	"src": {
+    "src": {
         "input": { 
             "comment": "dsts の第一要素と連携する",
             "filepath": "./data/rcomplex/src-data.csv",
