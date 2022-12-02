@@ -7,11 +7,20 @@ Class CsvFileIo
     private $colnum;
     private $map_pkeys = array();
     private $pkey_columns = NULL;
-
+    private $start_line = 1;
+    
     function __construct($filepath)
     {
         $this->filepath = $filepath;
         $this->load();
+    }
+    function set_start_line($start_line)
+    {
+        $this->start_line = $start_line;
+    }
+    function start_line()
+    {
+        return $this->start_line;
     }
 
     private function load()
@@ -249,6 +258,7 @@ Class CsvFileIo
     {
         $this->pkey_columns = $pkey_columns;
         $start_line_int = (int)$start_line;
+        $this->set_start_line($start_line_int);
         $num = $this->linenum();
         for ($i = $start_line_int; $i < $num; $i++) {
             $mykey = $this->get_pkeys($i, $pkey_columns);

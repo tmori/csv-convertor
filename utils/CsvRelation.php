@@ -35,7 +35,7 @@ Class CsvRelation
             #printf("child=%s\n", $child);
             $colinx = $objs[$child]->colinx($this->map_ids[$key]["c"]);
             #TODO
-            $child_row = $objs[$child]->get_value_by_pkey(1, [ $colinx ], $parent_value);
+            $child_row = $objs[$child]->get_value_by_pkey($objs[$child]->start_line(), [ $colinx ], $parent_value);
             if ($i == $last_inx) {
                 $child_value = $objs[$child]->value($child_row, $objs[$child]->colinx($name));
                 printf("%s.%s=%s\n", $path, $name, $child_value);
