@@ -33,7 +33,7 @@ foreach ($json_array["dsts"] as $obj) {
 }
 
 $relation = new CsvRelation($json_array["dst_relations"]);
-$relation->get_value(1, $dst_objs, "out1.out2.out3", "tell");
+$relation->get_value(1, $dst_objs, "out1.out2.out3", "email");
 #$start_line_src = (int)$json_array["start_line_src"];
 #$start_line_dst = (int)$json_array["start_line_dst"];
 #$src_pkeys = $src_csv_obj->get_colinx_array($json_array["src_pkeys"]);

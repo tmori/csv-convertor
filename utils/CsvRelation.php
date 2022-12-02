@@ -13,11 +13,7 @@ Class CsvRelation
                 "p"=> $relation["parent_colname"],
                 "c"=> $relation["child_colname"]
             ];
-            $this->map_ids = $this->map_ids +  { $key => $value };
-            #echo var_dump($this->map_ids);
-            $tmp = $this->map_ids[$key];
-            echo var_dump($tmp);
-            printf("****\n");
+            $this->map_ids[$key] = $value;
         }
     }
 
@@ -30,23 +26,20 @@ Class CsvRelation
         for ($i = 1; $i < $num; $i++) {
             $parent = $path_array[$i - 1];
             $child = $path_array[$i];
-            printf("parent=%s\n", $parent);
+            #printf("parent=%s\n", $parent);
             $key = $parent . "." . $child;
-            printf("tmp key=%s\n", $this->map_ids[$key]["p"]);
+            #printf("tmp key=%s\n", $this->map_ids[$key]["p"]);
             $colinx = $objs[$parent]->colinx($this->map_ids[$key]["p"]);
             $parent_value = $objs[$parent]->get_pkeys($parent_row, [ $colinx ]);
-            printf("parent_value=%s\n", $parent_value);
-            printf("child=%s\n", $child);
+            #printf("parent_value=%s\n", $parent_value);
+            #printf("child=%s\n", $child);
             $colinx = $objs[$child]->colinx($this->map_ids[$key]["c"]);
+            #TODO
             $child_row = $objs[$child]->get_value_by_pkey(1, [ $colinx ], $parent_value);
-            if ($i != $last_inx) {
-
-            }
-            else {
+            if ($i == $last_inx) {
                 $child_value = $objs[$child]->value($child_row, $objs[$child]->colinx($name));
-                printf("child_value=%s\n", $child_value);
+                printf("%s.%s=%s\n", $path, $name, $child_value);
             }
-            #echo var_dump($ret);
         }
         return NULL;
     }    

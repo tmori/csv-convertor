@@ -40,9 +40,9 @@
         },
         {
             "parent": "out2",
-            "parent_colname": [ "p2" ],
+            "parent_colname": "p2",
             "child": "out3",
-            "child_colname": [ "id" ]
+            "child_colname": "id"
         }
     ],
     "conv_mapping": [
