@@ -39,8 +39,8 @@ foreach ($json_array["dsts"] as $obj) {
 $relation = new CsvRelation($json_array["dst_relations"], $dst_objs);
 $convertor = new CsvConvertor();
 
-for ($i = $json_array["src"][$src_obj_name]["start_line"]; $i < $src_csv_obj->linenum(); $i++) {
-    $src_pkey = $src_csv_obj->get_pkeys($i, $json_array["src"][$src_obj_name]["pkeys"]);
+for ($src_row = $json_array["src"][$src_obj_name]["start_line"]; $src_row < $src_csv_obj->linenum(); $src_row++) {
+    $src_pkey = $src_csv_obj->get_pkeys($src_row, $json_array["src"][$src_obj_name]["pkeys"]);
     $dst_csv_obj = $dst_objs[key($json_array["dsts"][0])];
     $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     #printf("dst_row=%s\n", $dst_row);
@@ -48,7 +48,7 @@ for ($i = $json_array["src"][$src_obj_name]["start_line"]; $i < $src_csv_obj->li
         throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
     }
     foreach ($json_array["params"] as $param) {
-        $convertor->do_task($param, $src_csv_obj, $i, $relation, $dst_row);
+        $convertor->do_task($param, $src_csv_obj, $src_row, $relation, $dst_row);
     }
 }
 

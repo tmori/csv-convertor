@@ -42,7 +42,7 @@
             "child": "out3"
         }
     ],
-    "conv_mapping": [
+    "params": [
         {
             "conv_type": "normal",
             "src": "tell",
