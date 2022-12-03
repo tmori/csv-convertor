@@ -11,6 +11,9 @@ Class CsvConvertor
         if (strcmp($conv_type, "normal") == 0) {
             $this->conv_normal($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "fixed") == 0) {
+            $this->conv_fixed($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else if (strcmp($conv_type, "combine1") == 0) {
             $this->conv_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
@@ -20,6 +23,13 @@ Class CsvConvertor
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
+    }
+    private function conv_fixed($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $value =$param["value"];
+        $dst_path = $param["dst_path"];
+
+        $dst_obj->set_value($dst_row, $dst_path, $value);
     }
     private function conv_normal($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {

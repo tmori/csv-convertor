@@ -47,6 +47,16 @@
     ],
     "params": [
         {
+            "conv_type": "fixed",
+            "value": "f1",
+            "dst_path": "out1/colb"
+        },
+        {
+            "conv_type": "fixed",
+            "value": "f2",
+            "dst_path": "out1/out2/colb"
+        },
+        {
             "conv_type": "normal",
             "src_path": "input/tell",
             "dst_path": "out1/out2/tell"
