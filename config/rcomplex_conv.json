@@ -1,12 +1,14 @@
 {
-    "src": {
-        "input": { 
-            "comment": "dsts の第一要素と連携する",
-            "filepath": "./data/rcomplex/src-data.csv",
-            "start_line": 1,
-            "pkeys": [ "id" ] 
+    "srcs": [
+        {
+            "input": { 
+                "comment": "dsts の第一要素と連携する",
+                "filepath": "./data/rcomplex/src-data.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
         }
-    },
+    ],
     "dsts": [
         {
             "out1": {
@@ -30,6 +32,7 @@
             }
         }
     ],
+    "src_relations": [],
     "dst_relations": [
         {
             "parent": "out1",
@@ -42,16 +45,16 @@
             "child": "out3"
         }
     ],
-    "conv_mapping": [
+    "params": [
         {
             "conv_type": "normal",
-            "src": "tell",
-            "dst_path": "out1.out2.tell"
+            "src_path": "input/tell",
+            "dst_path": "out1/out2/tell"
         },
         {
             "conv_type": "normal",
-            "src": "email",
-            "dst_path": "out1.out2.out3.email"
+            "src_path": "input/email",
+            "dst_path": "out1/out2/out3/email"
         }
     ]
 }

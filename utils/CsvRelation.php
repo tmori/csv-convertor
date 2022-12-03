@@ -54,6 +54,9 @@ Class CsvRelation
             #printf("%s.%s=%s\n", $path, $name, $value);
             return $value;
         }
+        else {
+            printf("ERROR: not found path=%s\n", $path);
+        }
         return NULL;
     }
     public function set_value($parent_row, $path, $value)

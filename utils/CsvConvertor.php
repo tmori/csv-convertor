@@ -23,16 +23,16 @@ Class CsvConvertor
     }
     private function conv_normal($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
-        $src_inx = $src_obj->colinx($param["src"]);
+        $src_path =$param["src_path"];
         $dst_path = $param["dst_path"];
-        $src_value = $src_obj->value($src_row, $src_inx);
+        $src_value = $src_obj->value($src_row, $src_path);
         $dst_obj->set_value($dst_row, $dst_path, $src_value);
     }
     private function conv_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
-        $src_inx = $src_obj->colinx($param["src"]);
+        $src_path =$param["src_path"];
         $dst_path = $param["dst_path"];
-        $src_value = $src_obj->value($src_row, $src_inx);
+        $src_value = $src_obj->value($src_row, $src_path);
         $combined_value = sprintf(
             $param["combine_format"], 
             $src_value
@@ -41,11 +41,11 @@ Class CsvConvertor
     }
     private function conv_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
-        $src0_inx = $src_obj->colinx($param["srcs"][0]);
-        $src1_inx = $src_obj->colinx($param["srcs"][1]);
+        $src0_path =$param["src_paths"][0];
+        $src1_path =$param["src_paths"][1];
         $dst_path = $param["dst_path"];
-        $src0_value = $src_obj->value($src_row, $src0_inx);
-        $src1_value = $src_obj->value($src_row, $src1_inx);
+        $src0_value = $src_obj->value($src_row, $src0_path);
+        $src1_value = $src_obj->value($src_row, $src1_path);
         #printf("src0_value=%s src1_value=%s\n", $src0_value, $src1_value);
         $combined_value = sprintf(
             $param["combine_format"], 
