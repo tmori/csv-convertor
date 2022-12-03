@@ -23,7 +23,7 @@ $src_obj_name = key($json_array["src"]);
 $src_csv_obj = new CsvFileIo($json_array["src"][$src_obj_name]["filepath"]);
 $src_csv_obj->create_cache(
     $json_array["src"][$src_obj_name]["start_line"], 
-    $json_array["src"][$src_obj_name]["pkeys"]);
+    $src_csv_obj->get_colinx_array($json_array["src"][$src_obj_name]["pkeys"]));
 $dst_objs = array();
 foreach ($json_array["dsts"] as $obj) {
     $dst_obj_name = key($obj);
@@ -33,7 +33,7 @@ foreach ($json_array["dsts"] as $obj) {
     $dst_objs[$dst_obj_name] = $dst_csv_obj;
     $dst_csv_obj->create_cache(
         $obj[$dst_obj_name]["start_line"], 
-        $obj[$dst_obj_name]["pkeys"]);
+        $dst_csv_obj->get_colinx_array($obj[$dst_obj_name]["pkeys"]));
 }
 
 $relation = new CsvRelation($json_array["dst_relations"], $dst_objs);

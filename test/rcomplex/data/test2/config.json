@@ -46,24 +46,24 @@
         {
             "conv_type": "normal",
             "src": "tell",
-            "dst_path": "out1.out2.tell"
+            "dst_path": "out1/out2/tell"
         },
         {
             "conv_type": "normal",
             "src": "email",
-            "dst_path": "out1.out2.out3.email"
+            "dst_path": "out1/out2/out3/email"
         },
         {
             "conv_type": "combine1",
             "combine_format": "st_%s",
             "src": "id",
-            "dst_path": "out1.out2.out3.code"
+            "dst_path": "out1/out2/out3/code"
         },
         {
             "conv_type": "combine2",
             "combine_format": "%s(st_%s)",
             "srcs": [ "user_name", "id" ],
-            "dst_path": "out1.out2.out3.name"
+            "dst_path": "out1/out2/out3/name"
         }
     ]
 }

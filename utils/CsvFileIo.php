@@ -256,12 +256,14 @@ Class CsvFileIo
     }
     public function create_cache($start_line, $pkey_columns)
     {
+        #printf("pkey_comuns=%s\n", $pkey_columns[0]);
         $this->pkey_columns = $pkey_columns;
         $start_line_int = (int)$start_line;
         $this->set_start_line($start_line_int);
         $num = $this->linenum();
         for ($i = $start_line_int; $i < $num; $i++) {
             $mykey = $this->get_pkeys($i, $pkey_columns);
+            #printf("%s\n", $mykey);
             if (isset($this->map_pkeys[$mykey])) {
                 throw new Exception('ERROR: Invalid table same pkey is found in row ' . strval($i) . ' and ' . strval($this->map_pkeys[$mykey]) . ' pkey=' . $mykey);
             }

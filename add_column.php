@@ -10,7 +10,7 @@ if (($argc != 3) && ($argc != 4)) {
 $src_csv=$argv[1];
 $colname=$argv[2];
 $dump_path = NULL;
-if ($argc == 3) {
+if ($argc == 4) {
     $dump_path = $argv[3];
 }
 $src_csv_obj = new CsvFileIo($src_csv);

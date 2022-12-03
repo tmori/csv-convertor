@@ -2,10 +2,8 @@
 
 Class CsvConvertor
 {
-    private $conv_ops = array();
     function __construct()
     {
-        $this->conv_ops = [ "normal" => $this->conv_normal ];
     }
     public function do_task($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {

@@ -10,7 +10,7 @@ Class CsvRelation
         $this->objs = $objs;
         $this->relation_definition = $relation_definitions;
         foreach ($relation_definitions as $relation) {
-            $key = $relation["parent"] . "." . $relation["child"];
+            $key = $relation["parent"] . "/" . $relation["child"];
             $value = [
                 "p"=> $relation["parent_colnames"]
             ];
@@ -19,14 +19,17 @@ Class CsvRelation
     }
     private function row($parent_row, $path)
     {
-        $path_array = explode('.', $path);
+        $path_array = explode('/', $path);
         $num = count($path_array);
         $name = $path_array[$num - 1];
+        if ($num == 2) {
+            return $parent_row;
+        }
         $last_inx = $num - 2;
         for ($i = 1; $i < $num - 1; $i++) {
             $parent = $path_array[$i - 1];
             $child = $path_array[$i];
-            $key = $parent . "." . $child;
+            $key = $parent . "/" . $child;
             $columns = $this->objs[$parent]->get_colinx_array($this->map_ids[$key]["p"]);
             $parent_value = $this->objs[$parent]->get_pkeys($parent_row, $columns);
             $child_row = $this->objs[$child]->get_value_by_pkey_with_cache($parent_value);
@@ -42,7 +45,7 @@ Class CsvRelation
 
     public function value($parent_row, $path)
     {
-        $tmp = explode('.', $path);
+        $tmp = explode('/', $path);
         $target = $tmp[count($tmp) - 2];
         $name = $tmp[count($tmp) - 1];
         $row = $this->row($parent_row, $path);
@@ -55,7 +58,7 @@ Class CsvRelation
     }
     public function set_value($parent_row, $path, $value)
     {
-        $tmp = explode('.', $path);
+        $tmp = explode('/', $path);
         $target = $tmp[count($tmp) - 2];
         $name = $tmp[count($tmp) - 1];
         $row = $this->row($parent_row, $path);
