@@ -23,6 +23,7 @@ $src_obj_name = key($json_array["srcs"]);
 $src_objs = array();
 foreach ($json_array["srcs"] as $obj) {
     $src_obj_name = key($obj);
+    #printf("src=%s\n", $src_obj_name);
     $src_csv_obj = new CsvFileIo($obj[$src_obj_name]["filepath"]);
     $src_objs[$src_obj_name] = $src_csv_obj;
     $src_csv_obj->create_cache(

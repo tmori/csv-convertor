@@ -25,7 +25,13 @@ Class CsvConvertor
     {
         $src_path =$param["src_path"];
         $dst_path = $param["dst_path"];
+
+        if (isset($param["calc_src_row"]) && $param["calc_src_row"]) {
+            $pkey = $dst_obj->pkey($dst_row, $dst_path);
+            $src_row = $src_obj->row_by_root($src_path, $pkey);
+        }
         $src_value = $src_obj->value($src_row, $src_path);
+        #printf("src_path=%s src_value=%s\n", $src_path, $src_value);
         $dst_obj->set_value($dst_row, $dst_path, $src_value);
     }
     private function conv_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row)

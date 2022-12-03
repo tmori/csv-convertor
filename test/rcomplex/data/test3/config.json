@@ -1,0 +1,73 @@
+{
+	"srcs": [
+        {
+            "main": { 
+                "comment": "dsts の第一要素と連携する",
+                "filepath": "./test/rcomplex/data/test3/src1.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ]
+            }
+        },
+        {
+            "location": { 
+                "filepath": "./test/rcomplex/data/test3/src2.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ]
+            }
+        }
+    ],
+    "dsts": [
+        {
+            "out1": {
+                "filepath": "./test/rcomplex/data/test3/input1.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id1" ] 
+            }
+        },
+        {
+            "out2": {
+                "filepath": "./test/rcomplex/data/test3/input2.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id2" ] 
+            }    
+        },
+        {
+            "out3": {
+                "filepath": "./test/rcomplex/data/test3/input3.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id3" ] 
+            }
+        }
+    ],
+    "src_relations": [],
+    "dst_relations": [
+        {
+            "parent": "out1",
+            "parent_colnames": [ "p1" ],
+            "child": "out2"
+        },
+        {
+            "parent": "out2",
+            "parent_colnames": [ "p2" ],
+            "child": "out3"
+        }
+    ],
+    "params": [
+        {
+            "conv_type": "normal",
+            "src_path": "main/tell",
+            "dst_path": "out1/out2/tell"
+        },
+        {
+            "conv_type": "normal",
+            "src_path": "main/email",
+            "dst_path": "out1/out2/out3/email"
+        },
+        {
+            "conv_type": "normal",
+            "calc_src_row": true,
+            "src_path": "location/location",
+            "dst_path": "out1/location"
+        }
+    ]
+}

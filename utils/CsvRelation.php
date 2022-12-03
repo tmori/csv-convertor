@@ -17,6 +17,15 @@ Class CsvRelation
             $this->map_ids[$key] = $value;
         }
     }
+    public function row_by_root($path, $key)
+    {
+        $path_array = explode('/', $path);
+        $root = $path_array[0];
+        $name = $path_array[1];
+        $row = $this->objs[$root]->get_value_by_pkey_with_cache($key);
+        return $row;
+    }
+
     private function row($parent_row, $path)
     {
         $path_array = explode('/', $path);
@@ -59,6 +68,22 @@ Class CsvRelation
         }
         return NULL;
     }
+    public function pkey($parent_row, $path)
+    {
+        $tmp = explode('/', $path);
+        $target = $tmp[count($tmp) - 2];
+        $name = $tmp[count($tmp) - 1];
+        $row = $this->row($parent_row, $path);
+        if ($row) {
+            $pkey = $this->objs[$target]->get_pkeys($row, [ $this->objs[$target]->colinx($name) ]);
+            return $pkey;
+        }
+        else {
+            printf("ERROR: not found path=%s\n", $path);
+        }
+        return NULL;
+    }
+
     public function set_value($parent_row, $path, $value)
     {
         $tmp = explode('/', $path);
