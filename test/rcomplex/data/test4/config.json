@@ -1,0 +1,36 @@
+{
+    "dst0_not_found_then_create": true,
+	"srcs": [
+        {
+            "input": { 
+                "comment": "dsts の第一要素と連携する",
+                "filepath": "./test/rcomplex/data/test4/src.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        }
+    ],
+    "dsts": [
+        {
+            "out1": {
+                "filepath": "./test/rcomplex/data/test4/input1.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id1" ] 
+            }
+        }
+    ],
+    "src_relations": [],
+    "dst_relations": [],
+    "params": [
+        {
+            "conv_type": "normal",
+            "src_path": "input/user_name",
+            "dst_path": "out1/user_name"
+        },
+        {
+            "conv_type": "serial",
+            "initial_value": 1,
+            "dst_path": "out1/sid"
+        }
+    ]
+}

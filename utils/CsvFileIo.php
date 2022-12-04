@@ -134,6 +134,7 @@ Class CsvFileIo
         #    }    
         #}
         $this->lines[$row_int][$index_int] = $value;
+        #printf("set_value[%d][%d]=%s\n", $row_int, $index_int, $value);
     }
     public function get_empty_line()
     {
@@ -279,6 +280,10 @@ Class CsvFileIo
     {
         $mykey = $this->get_pkeys($row, $this->pkey_columns);
         $this->map_pkeys[$mykey] = $row;
+    }
+    public function pkey_columns()
+    {
+        return $this->pkey_columns;
     }
     public function get_value_by_pkey_with_cache($pkey)
     {

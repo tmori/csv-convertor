@@ -16,6 +16,12 @@ if ($argc == 3) {
 }
 $json_array = load_json($map_json);
 
+$dst0_not_found_then_create = false;
+$v = $json_array["dst0_not_found_then_create"];
+if (isset($v) && ($v === true)) {
+    $dst0_not_found_then_create = true;
+}
+
 $src_obj_name = key($json_array["srcs"]);
 #printf("src_obj_name=%s\n", $src_obj_name);
 #printf("INFO: src_obj_fpath=%s\n", $json_array["src"][$src_obj_name]["filepath"]);
@@ -32,6 +38,7 @@ foreach ($json_array["srcs"] as $obj) {
 }
 
 $dst_objs = array();
+$dst_pkeys = NULL;
 foreach ($json_array["dsts"] as $obj) {
     $dst_obj_name = key($obj);
     #printf("dst_obj_name=%s\n", $dst_obj_name);
@@ -41,6 +48,9 @@ foreach ($json_array["dsts"] as $obj) {
     $dst_csv_obj->create_cache(
         $obj[$dst_obj_name]["start_line"], 
         $dst_csv_obj->get_colinx_array($obj[$dst_obj_name]["pkeys"]));
+    if (is_null($dst_pkeys)) {
+        $dst_pkeys = $dst_csv_obj->get_colinx_array($obj[$dst_obj_name]["pkeys"]);
+    }
 }
 
 $relation_src = new CsvRelation($json_array["src_relations"], $src_objs);
@@ -53,19 +63,30 @@ $src_csv_obj = $src_objs[key($obj)];
 $src_linenum = $src_csv_obj->linenum();
 $src_obj_name = key($obj);
 $src_start_line = $obj[$src_obj_name]["start_line"];
-$src_pkeys = $obj[$src_obj_name]["pkeys"];
+$src_pkeys = $src_csv_obj->get_colinx_array($obj[$src_obj_name]["pkeys"]);
+
+$dst_csv_obj = $dst_objs[key($json_array["dsts"][0])];
+$relation_dst->set_root(key($json_array["dsts"][0]));
 
 for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
     $src_pkey = $src_csv_obj->get_pkeys($src_row, $src_pkeys);
-    $dst_csv_obj = $dst_objs[key($json_array["dsts"][0])];
     $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     #printf("dst_row=%s\n", $dst_row);
+    if (is_null($dst_row) && ($dst0_not_found_then_create == false)) {
+        throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
+    }
+    else if (is_null($dst_row) && ($dst0_not_found_then_create == true)) {
+        $dst_row = $relation_dst->create_newline_with_pkey($src_csv_obj, $src_row);
+    }
     if (is_null($dst_row)) {
         throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
     }
+
+    $relation_dst->delete_cache_line($dst_row);
     foreach ($json_array["params"] as $param) {
         $convertor->do_task($param, $relation_src, $src_row, $relation_dst, $dst_row);
     }
+    $relation_dst->set_cache_line($dst_row);
 }
 
 foreach ($json_array["dsts"] as $obj)
