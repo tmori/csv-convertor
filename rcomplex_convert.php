@@ -30,7 +30,18 @@ $src_objs = array();
 foreach ($json_array["srcs"] as $obj) {
     $src_obj_name = key($obj);
     #printf("src=%s\n", $src_obj_name);
-    $src_csv_obj = new CsvFileIo($obj[$src_obj_name]["filepath"]);
+    $env_filepath = sprintf("SRCS_%s_FILEPATH", strtoupper($src_obj_name));
+    $filepath = getenv($env_filepath, $local_only = true);
+    #printf("filepath=%s\n", $filepath);
+    #printf("is_null=%d\n", is_null($filepath));
+    #printf("empty=%d\n", empty($filepath));
+    #printf("isset=%d\n", isset($filepath));
+    if (($filepath === false) || empty($filepath)) {
+        $src_csv_obj = new CsvFileIo($obj[$src_obj_name]["filepath"]);
+    }
+    else {
+        $src_csv_obj = new CsvFileIo($filepath);
+    }
     $src_objs[$src_obj_name] = $src_csv_obj;
     $src_csv_obj->create_cache(
         $obj[$src_obj_name]["start_line"], 
@@ -43,7 +54,14 @@ foreach ($json_array["dsts"] as $obj) {
     $dst_obj_name = key($obj);
     #printf("dst_obj_name=%s\n", $dst_obj_name);
     #printf("INFO: dst_obj_fpath=%s\n", $obj[$dst_obj_name]["filepath"]);
-    $dst_csv_obj = new CsvFileIo($obj[$dst_obj_name]["filepath"]);
+    $env_filepath = sprintf("DSTS_%s_FILEPATH", strtoupper($dst_obj_name));
+    $filepath = getenv($env_filepath, $local_only = true);
+    if (($filepath === false) || empty($filepath)) {
+        $dst_csv_obj = new CsvFileIo($obj[$dst_obj_name]["filepath"]);
+    }
+    else {
+        $dst_csv_obj = new CsvFileIo($filepath);
+    }
     $dst_objs[$dst_obj_name] = $dst_csv_obj;
     $dst_csv_obj->create_cache(
         $obj[$dst_obj_name]["start_line"], 
