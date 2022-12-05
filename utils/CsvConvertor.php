@@ -44,11 +44,18 @@ Class CsvConvertor
             $this->serial_id = $dst_value;
         }
         else {
-            if ($this->serial_id == 0) {
-                $this->serial_id = (int)$param["initial_value"];
+            $dst_value = $dst_obj->last_value_by_root($dst_path, 1);
+            #printf("serial_id=%d dst_row=%d dst_value=%s\n", $this->serial_id, $dst_row, $dst_value);
+            if ($dst_value) {
+                $this->serial_id = $dst_value + 1;
             }
             else {
-                $this->serial_id = $this->serial_id + 1;
+                if ($this->serial_id == 0) {
+                    $this->serial_id = (int)$param["initial_value"];
+                }
+                else {
+                    $this->serial_id = $this->serial_id + 1;
+                }
             }
             #printf("dst_row=%d dst_value=%d serial_id=%d\n", $dst_row, $dst_value, $this->serial_id);
             $dst_obj->set_value($dst_row, $dst_path, $this->serial_id);

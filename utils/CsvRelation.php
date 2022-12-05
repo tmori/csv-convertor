@@ -57,7 +57,19 @@ Class CsvRelation
         }
         return null;
     }
-
+    public function last_value_by_root($path, $minus_off)
+    {
+        $path_array = explode('/', $path);
+        $root = $path_array[0];
+        $colname = $path_array[1];
+        $start_line = $this->objs[$root]->start_line();
+        $index = $this->objs[$root]->colinx($colname);
+        $last_off = $this->objs[$root]->linenum() - 1;
+        #printf("last_off=%d\n", $last_off);
+        $off = $last_off - $minus_off;
+        $value = $this->objs[$root]->value($off, $index);
+        return $value;
+    }
     public function value($parent_row, $path)
     {
         $tmp = explode('/', $path);
