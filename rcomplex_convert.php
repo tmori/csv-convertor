@@ -17,9 +17,12 @@ if ($argc == 3) {
 $json_array = load_json($map_json);
 
 $dst0_not_found_then_create = false;
-
+$dst0_not_found_then_skip = false;
 if (isset($json_array["dst0_not_found_then_create"]) && ($json_array["dst0_not_found_then_create"] === true)) {
     $dst0_not_found_then_create = true;
+}
+if (isset($json_array["dst0_not_found_then_skip"]) && ($json_array["dst0_not_found_then_skip"] === true)) {
+    $dst0_not_found_then_skip = true;
 }
 
 $src_obj_name = key($json_array["srcs"]);
@@ -91,6 +94,9 @@ for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
     $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
     #printf("dst_row=%s\n", $dst_row);
     if (is_null($dst_row) && ($dst0_not_found_then_create == false)) {
+        if ($dst0_not_found_then_skip == true) {
+            continue;
+        }
         throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
     }
     else if (is_null($dst_row) && ($dst0_not_found_then_create == true)) {

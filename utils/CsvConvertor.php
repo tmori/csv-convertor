@@ -5,7 +5,15 @@ Class CsvConvertor
     private $serial_id;
     function __construct()
     {
-        $this->serial_id = 0;
+        $serial_ivalue = getenv("SERIAL_ID_INITIAL_VALUE", $local_only = true);
+        if (($serial_ivalue === false) || is_numeric($serial_ivalue)) {
+            $this->serial_id = (int)$serial_ivalue;
+        }
+        else {
+            #printf("SERIAL_ID_INITIAL_VALUE is not set\n");
+            $this->serial_id = 0;
+        }
+        #printf("initial value=%d\n", $this->serial_id);
     }
     public function do_task($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {

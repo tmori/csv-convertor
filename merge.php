@@ -10,9 +10,13 @@ if (($argc != 4) && ($argc != 5)) {
 $src_csv_file=$argv[1];
 $merge_csv_file=$argv[2];
 $merge_csv_start_line=(int)$argv[3];
-$dump_dir = ".";
+$dump_path = "./dump.csv";
 if ($argc == 5) {
-    $dump_dir = $argv[4];
+    $tmp_array = explode('/', $src_csv_file);
+    $last_entry = $tmp_array[count($tmp_array) -1];
+    $tmp_array = explode('.', $last_entry);
+    $filename = $tmp_array[0];
+    $dump_path = $argv[4] . "/" . $filename . ".csv";
 }
 
 $src_csv_obj = new CsvFileIo($src_csv_file);
