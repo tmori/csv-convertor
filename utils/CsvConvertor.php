@@ -46,8 +46,9 @@ Class CsvConvertor
         else {
             $dst_value = $dst_obj->last_value_by_root($dst_path, 1);
             #printf("serial_id=%d dst_row=%d dst_value=%s\n", $this->serial_id, $dst_row, $dst_value);
-            if ($dst_value) {
+            if ($dst_value && is_numeric($dst_value)) {
                 $this->serial_id = $dst_value + 1;
+                #printf("next_id=%d\n",  $this->serial_id );
             }
             else {
                 if ($this->serial_id == 0) {
