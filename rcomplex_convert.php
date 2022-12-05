@@ -17,8 +17,8 @@ if ($argc == 3) {
 $json_array = load_json($map_json);
 
 $dst0_not_found_then_create = false;
-$v = $json_array["dst0_not_found_then_create"];
-if (isset($v) && ($v === true)) {
+
+if (isset($json_array["dst0_not_found_then_create"]) && ($json_array["dst0_not_found_then_create"] === true)) {
     $dst0_not_found_then_create = true;
 }
 
