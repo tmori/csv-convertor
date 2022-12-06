@@ -40,22 +40,26 @@ Class CsvRelation
         if ($num == 2) {
             return $parent_row;
         }
+        #printf("path=%s\n", $path);
         $last_inx = $num - 2;
         for ($i = 1; $i < $num - 1; $i++) {
             $parent = $path_array[$i - 1];
             $child = $path_array[$i];
             $key = $parent . "/" . $child;
             $columns = $this->objs[$parent]->get_colinx_array($this->map_ids[$key]["p"]);
+            #printf("path rel: parent=%s child=%s parent_row=%d\n", $parent, $child, $parent_row);
             $parent_value = $this->objs[$parent]->get_pkeys($parent_row, $columns);
             $child_row = $this->objs[$child]->get_value_by_pkey_with_cache($parent_value);
+            #printf("path rel: child=%s child_row=%d\n", $child, $child_row);
             if ($i == $last_inx) {
                 return $child_row;
             }
             else {
-                $paretn_row = $child_row;
+                $parent_row = $child_row;
+                #printf("next parent_row=%s\n", $parent_row);
             }
         }
-        return null;
+        return NULL;
     }
     public function last_value_by_root($path, $minus_off)
     {

@@ -88,11 +88,11 @@ $src_pkeys = $src_csv_obj->get_colinx_array($obj[$src_obj_name]["pkeys"]);
 
 $dst_csv_obj = $dst_objs[key($json_array["dsts"][0])];
 $relation_dst->set_root(key($json_array["dsts"][0]));
-
+#printf("linenum=%d\n", $dst_csv_obj->linenum());
 for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
     $src_pkey = $src_csv_obj->get_pkeys($src_row, $src_pkeys);
     $dst_row = $dst_csv_obj->get_value_by_pkey_with_cache($src_pkey);
-    #printf("dst_row=%s\n", $dst_row);
+    #printf("dst_row=%s src_pkey=%s linenum=%d\n", $dst_row, $src_pkey, $dst_csv_obj->linenum());
     if (is_null($dst_row) && ($dst0_not_found_then_create == false)) {
         if ($dst0_not_found_then_skip == true) {
             continue;
@@ -107,6 +107,7 @@ for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
     }
 
     $relation_dst->delete_cache_line($dst_row);
+    #printf("before linenum=%d\n", $dst_csv_obj->linenum());
     foreach ($json_array["params"] as $param) {
         $convertor->do_task($param, $relation_src, $src_row, $relation_dst, $dst_row);
     }

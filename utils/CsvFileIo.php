@@ -93,6 +93,7 @@ Class CsvFileIo
     {
         $row_int = (int)$row;
         $index_int = (int)$index;
+        #printf("value:filepath=%s row=%d linenum=%d\n", $this->filepath, $row, $this->linenum());
         if ($row_int >= $this->linenum()) {
             throw new Exception('ERROR: overflow linenum=' . strval($this->linenum()) . '<= row=' . strval($row));
         }
