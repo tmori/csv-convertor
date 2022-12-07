@@ -74,7 +74,6 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $src_inx = $src_csv_obj->colinx($value["src"]);
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src_value = $src_csv_obj->value($i, $src_inx);
-            $dst_value = $dst_csv_obj->value($i, $dst_inx);
             #print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
             #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
             $dst_csv_obj->set_value($dst_row, $dst_inx, $src_value);
@@ -104,7 +103,6 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $src_inx = $src_csv_obj->colinx($value["src"]);
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             $src_value = $src_csv_obj->value($i, $src_inx);
-            $dst_value = $dst_csv_obj->value($i, $dst_inx);
             $split_values = explode($value["split_key"], $src_value);
             $split_value = $split_values[$value["split_index"]];
             #print("INFO: COPYING src[" . $i . "][" . $src_inx .  "]='" . $src_value . "' >> ");
