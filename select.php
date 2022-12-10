@@ -35,9 +35,18 @@ $colinx = $csv_obj->colinx($colname);
 for ($i = $start_line; $i < $num; $i++) {
     $value = $csv_obj->value($i, $colinx);
     $is_hit = false;
+    #printf("value=%s cond_value=%s cond=%s\n", $value, $cond_value, $cond);
     if (strcmp($cond, "eq") == 0) {
         if (strcmp("empty", $cond_value) == 0) {
             if (is_null($value) || empty($value)) {
+                $is_hit = true;
+                #printf("HIT: row=%d\n", $i);
+            }
+        }
+        else {
+            if (is_null($value) || empty($value)) {
+            }
+            else if (strcmp($value, $cond_value) == 0) {
                 $is_hit = true;
                 #printf("HIT: row=%d\n", $i);
             }
@@ -49,6 +58,14 @@ for ($i = $start_line; $i < $num; $i++) {
             }
             else {
                 $is_hit = true;
+            }
+        }
+        else {
+            if (is_null($value) || empty($value)) {
+            }
+            else if (strcmp($value, $cond_value) != 0) {
+                $is_hit = true;
+                #printf("HIT: row=%d\n", $i);
             }
         }
     }
