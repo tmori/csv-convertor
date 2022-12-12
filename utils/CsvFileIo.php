@@ -22,9 +22,16 @@ Class CsvFileIo
     {
         return $this->start_line;
     }
-
+    public function set_cols($cols)
+    {
+        $this->colnum = count($cols);
+        array_push($this->lines, $cols);
+    }
     private function load()
     {
+        if (is_null($this->filepath)) {
+            return;
+        }
         $handle = fopen($this->filepath, "r");
         if ($handle == false) {
             throw new Exception('ERROR: can not find file: ' . $this->filepath);
