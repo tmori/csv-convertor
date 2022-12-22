@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo $#
 if [ $# -ne 4 ]
 then
     echo "Usage: $0 <csv-file> <colname> <cvalues_file> <start_line>"
