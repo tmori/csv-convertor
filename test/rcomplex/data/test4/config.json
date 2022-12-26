@@ -28,6 +28,30 @@
             "dst_path": "out1/user_name"
         },
         {
+            "conv_type": "stroff",
+            "src_offs": [ 0 ],
+            "src_path": "input/colb",
+            "dst_path": "out1/c1"
+        },
+        {
+            "conv_type": "stroff",
+            "src_offs": [ 1 ],
+            "src_path": "input/colb",
+            "dst_path": "out1/c2"
+        },
+        {
+            "conv_type": "stroff",
+            "src_offs": [ 2, 3, 4 ],
+            "src_path": "input/colb",
+            "dst_path": "out1/c3"
+        },
+        {
+            "conv_type": "stroff",
+            "src_offs": [ 5 ],
+            "src_path": "input/colb",
+            "dst_path": "out1/c4"
+        },
+        {
             "conv_type": "serial",
             "initial_value": 1,
             "dst_path": "out1/sid"

@@ -33,6 +33,9 @@ Class CsvConvertor
         else if (strcmp($conv_type, "combine2") == 0) {
             $this->conv_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "stroff") == 0) {
+            $this->conv_stroff($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
@@ -111,7 +114,24 @@ Class CsvConvertor
         #printf("comvined_value=%s\n", $combined_value);
         $dst_obj->set_value($dst_row, $dst_path, $combined_value);
     }
+    private function conv_stroff($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $src_path =$param["src_path"];
+        $dst_path = $param["dst_path"];
+        $src_value = $src_obj->value($src_row, $src_path);
 
+        $combined_value = "";
+        foreach ($param["src_offs"] as $off) {
+            if ($off < strlen($src_value)) {
+                $combined_value = $combined_value . $src_value[$off];
+            }
+            else {
+                $combined_value = "";
+                break;
+            }
+        }
+        $dst_obj->set_value($dst_row, $dst_path, $combined_value);
+    }
 }
 
 ?>

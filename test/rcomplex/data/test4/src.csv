@@ -1,5 +1,5 @@
-id,user_name,tell,email
-99119,車寅次郎,0901-1-1,trajiro@example.com
-99120,小津安二郎,0901-2-1,yasujiro@example.com
-99121,直江兼続,0901-2-2,kanetugu@example.com
-99122,上杉謙信,0901-2-3,kenshin@example.com
+id,user_name,tell,email,colb
+99119,車寅次郎,0901-1-1,trajiro@example.com,97
+99120,小津安二郎,0901-2-1,yasujiro@example.com,97971
+99121,直江兼続,0901-2-2,kanetugu@example.com,979724
+99122,上杉謙信,0901-2-3,kenshin@example.com,979725
