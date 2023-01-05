@@ -40,6 +40,7 @@ foreach ($json_array["srcs"] as $obj) {
     #printf("empty=%d\n", empty($filepath));
     #printf("isset=%d\n", isset($filepath));
     if (($filepath === false) || empty($filepath)) {
+        #printf("filepath=%s\n", $obj[$src_obj_name]["filepath"]);
         $src_csv_obj = new CsvFileIo($obj[$src_obj_name]["filepath"]);
     }
     else {

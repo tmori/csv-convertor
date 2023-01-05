@@ -48,11 +48,11 @@ for ($i = $start_line_child; $i < $child_csv_obj->linenum(); $i++) {
             $child_csv_obj->set_value($i, $child_dst_col, $src_value);
         }
         else {
-            printf("WARN: not found parent_pkey_cols:%d: keyword=%s\n", $i, $keyword);
+            printf("WARN: not found parent_pkey_cols:row=%d: keyword=%s\n", $i, $keyword);
         }
     }
     else {
-        printf("WARN: not found child_fkey_cols:%d\n", $i);
+        printf("WARN: not found child_fkey_cols:row=%d child_fkey_cols=%s\n", $i, $child_fkey_cols[0]);
     }
 }
 

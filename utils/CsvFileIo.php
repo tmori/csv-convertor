@@ -224,10 +224,11 @@ Class CsvFileIo
         foreach ($pkey_columns as $pkey_col)
         {
             $value = $this->value($row, $pkey_col);
-            if ($value) {
+            if ($value != NULL) {
                 $pkey = $pkey . ":" . strval($value);
             }
             else {
+                #printf("NULL\n");
                 return NULL;
             }
             #print($pkey . "\n");
@@ -253,7 +254,7 @@ Class CsvFileIo
         foreach ($pkey_columns as $pkey_col)
         {
             $value = $line[$pkey_col];
-            if ($value) {
+            if ($value != NULL) {
                 $pkey = $pkey . ":" . strval($value);
             }
             else {
@@ -295,7 +296,7 @@ Class CsvFileIo
     }
     public function get_value_by_pkey_with_cache($pkey)
     {
-        if (isset($this->map_pkeys[$pkey])) {
+        if (isset($this->map_pkeys[$pkey]) && $this->map_pkeys[$pkey] != NULL) {
             return $this->map_pkeys[$pkey];
         }
         else {
