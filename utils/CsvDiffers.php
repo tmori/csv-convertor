@@ -2,9 +2,10 @@
 
 Class CsvDiffers
 {
-    private $serial_id;
-    function __construct()
+    private $is_debug;
+    function __construct($is_debug)
     {
+        $this->is_debug = $is_debug;
     }
     public function do_diff($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
@@ -29,6 +30,10 @@ Class CsvDiffers
             return 1;
         }
         else {
+            if ($this->is_debug) {
+                printf("PASSED: src_line=%d dst_line=%d src_value=%s dst_value=%s\n",
+                $src_row, $dst_row, $src_value, $dst_value);
+            }
             return 0;
         }
     }

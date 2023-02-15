@@ -5,15 +5,15 @@ require('utils/CsvRelation.php');
 require('utils/CsvDiffers.php');
 
 if (($argc != 2) && ($argc != 3)) {
-    print("USAGE: " . $argv[0] . " <json> [dump-path]\n");
+    print("USAGE: " . $argv[0] . " <json> [debug]\n");
     return 1;
+}
+$is_debug = false;
+if ($argc == 3) {
+    $is_debug = true;
 }
 
 $map_json=$argv[1];
-$dump_path = NULL;
-if ($argc == 3) {
-    $dump_path = $argv[2];
-}
 $json_array = load_json($map_json);
 $src_obj_name = key($json_array["srcs"]);
 #printf("src_obj_name=%s\n", $src_obj_name);
@@ -68,7 +68,7 @@ foreach ($json_array["dsts"] as $obj) {
 $relation_src = new CsvRelation($json_array["src_relations"], $src_objs);
 $relation_dst = new CsvRelation($json_array["dst_relations"], $dst_objs);
 
-$differs = new CsvDiffers();
+$differs = new CsvDiffers($is_debug);
 
 $obj = $json_array["srcs"][0];
 $src_csv_obj = $src_objs[key($obj)];
