@@ -1,0 +1,55 @@
+{
+	"srcs": [
+        {
+            "input": { 
+                "comment": "dsts の第一要素と連携する",
+                "filepath": "./test/diff_items/data/test1/src.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        }
+    ],
+    "dsts": [
+        {
+            "out1": {
+                "filepath": "./test/diff_items/data/test1/input1.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id1" ] 
+            }
+        },
+        {
+            "out2": {
+                "filepath": "./test/diff_items/data/test1/input2.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id2" ] 
+            }    
+        },
+        {
+            "out3": {
+                "filepath": "./test/diff_items/data/test1/input3.csv",
+                "start_line": 1,
+                "pkeys": [ "dst_id3" ] 
+            }
+        }
+    ],
+    "src_relations": [],
+    "dst_relations": [
+        {
+            "parent": "out1",
+            "parent_colnames": [ "p1" ],
+            "child": "out2"
+        },
+        {
+            "parent": "out2",
+            "parent_colnames": [ "p2" ],
+            "child": "out3"
+        }
+    ],
+    "params": [
+        {
+            "conv_type": "normal",
+            "src_path": "input/tell",
+            "dst_path": "out1/out2/tell"
+        }
+    ]
+}
