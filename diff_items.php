@@ -99,7 +99,7 @@ for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
         }
     }
 }
-
-return $ret_value;
+#printf("ret_value=%d\n", $ret_value);
+exit($ret_value);
 
 ?>
