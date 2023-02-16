@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     print("USAGE: " . $argv[0] . " <csv> <colname> <start_line> [dump-path]\n");
-    return 1;
+    exit(1);
 }
 
 $src_csv=$argv[1];
@@ -28,5 +28,6 @@ if (is_null($dump_path)) {
 else {
     $src_csv_obj->dump($dump_path);
 }
+exit(0);
 
 ?>

@@ -5,7 +5,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     print("USAGE: " . $argv[0] . " <map-json> <src-csv> <dst-csv> [dump-path]\n");
-    return 1;
+    exit(1);
 }
 
 $map_json=$argv[1];
@@ -202,5 +202,6 @@ if (is_null($dump_path)) {
 else {
     $dst_csv_obj->dump($dump_path);
 }
+exit(0);
 
 ?>

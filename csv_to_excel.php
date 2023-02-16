@@ -6,7 +6,7 @@ require('project/src/CsvToExcel.php');
 
 if ($argc != 4) {
     printf("USAGE: %s <csv-file> <excel-file> <start-line>\n", $argv[0]);
-    return 1;
+    exit(1);
 }
 $src_csv=$argv[1];
 $dst_xlsx=$argv[2];
@@ -27,6 +27,6 @@ for ($row_inx = $start_line; $row_inx < $linenum; $row_inx++) {
 
 
 $xlsx_obj->save($dst_xlsx);
-return 0;
+exit(0);
 
 ?>

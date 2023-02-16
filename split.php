@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     printf("USAGE: %s <split-linenum> <start-line> <csv-file> [dump-dir]\n", $argv[0]);
-    return 1;
+    exit(1);
 }
 
 $split_linenum=(int)$argv[1];
@@ -54,6 +54,6 @@ for ($i = 0; $i < $filenum; $i++) {
     #printf("INFO: CREATED %s\n", $s_file);
 }
 
-return 0;
+exit(0);
 
 ?>

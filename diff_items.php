@@ -6,7 +6,7 @@ require('utils/CsvDiffers.php');
 
 if (($argc != 2) && ($argc != 3)) {
     print("USAGE: " . $argv[0] . " <json> [debug]\n");
-    return 1;
+    exit(1);
 }
 $is_debug = false;
 if ($argc == 3) {

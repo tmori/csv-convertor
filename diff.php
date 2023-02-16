@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     print("USAGE: " . $argv[0] . " <table-key-json> <old-csv> <new-csv> [dump-dir]\n");
-    return 1;
+    exit(1);
 }
 
 $pkey_json=$argv[1];
@@ -39,5 +39,6 @@ $new_csv_obj->create_cache($json_array["start_line"], $new_csv_obj->get_colinx_a
 #$new_csv_obj->validate_pkeys($new_csv_obj->get_colinx_array($json_array["pkeys"]));
 
 $old_csv_obj->diff($old_csv_obj->get_colinx_array($json_array["pkeys"]), $json_array["start_line"], $new_csv_obj, $dump_dir);
+exit(0);
 
 ?>

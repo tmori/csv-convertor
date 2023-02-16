@@ -6,7 +6,7 @@ require('utils/CsvConvertor.php');
 
 if (($argc != 2) && ($argc != 3)) {
     print("USAGE: " . $argv[0] . " <json> [dump-path]\n");
-    return 1;
+    exit(1);
 }
 
 $map_json=$argv[1];
@@ -127,5 +127,6 @@ foreach ($json_array["dsts"] as $obj)
     #printf("INFO: WRITING %s\n", $path);
     $dst_objs[$dst_obj_name]->dump($path);
 }
+exit(0);
 
 ?>

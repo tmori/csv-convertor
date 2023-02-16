@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 2) && ($argc != 3)) {
     print("USAGE: " . $argv[0] . " <csv> [dump-path]\n");
-    return 1;
+    exit(1);
 }
 
 $src_csv=$argv[1];
@@ -20,5 +20,6 @@ if (is_null($dump_path)) {
 else {
     $src_csv_obj->dump_with_double_quote($dump_path);
 }
+exit(0);
 
 ?>

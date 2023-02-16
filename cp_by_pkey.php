@@ -6,7 +6,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     print("USAGE: " . $argv[0] . " <map-json> <parent-csv> <child-csv> [dump-path]\n");
-    return 1;
+    exit(1);
 }
 
 $pkey_json=$argv[1];
@@ -63,5 +63,6 @@ else {
     $child_csv_obj->dump($dump_path);
 }
 
+exit(0);
 
 ?>

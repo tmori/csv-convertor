@@ -6,7 +6,7 @@ require('project/src/ExcelToCsv.php');
 
 if (($argc != 3) && ($argc != 4)) {
     printf("USAGE: %s <excel-file> <sheet_name> [<dump-path>]\n", $argv[0]);
-    return 1;
+    exit(1);
 }
 $xlsx_file=$argv[1];
 $sheet_name=$argv[2];
@@ -34,6 +34,6 @@ while (true) {
 
 $csv_obj->dump($dump_path);
 
-return 0;
+exit(0);
 
 ?>

@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 7) && ($argc != 8)) {
     print("USAGE: " . $argv[0] . " <csv-file> <colname> <cond> <cond_value> <replace_value> <start_line> [dump-dir]\n");
-    return 1;
+    exit(1);
 }
 $csv_file=$argv[1];
 $colname=$argv[2];
@@ -77,5 +77,6 @@ for ($i = $start_line; $i < $num; $i++) {
 }
 
 $select_obj->dump($dump_path);
+exit(0);
 
 ?>

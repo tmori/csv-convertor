@@ -4,7 +4,7 @@ require('utils/CsvFileIo.php');
 
 if (($argc != 4) && ($argc != 5)) {
     printf("USAGE: %s <src-csv> <merge-csv> <merge-csv-start-line> [dump-dir]\n", $argv[0]);
-    return 1;
+    exit(1);
 }
 
 $src_csv_file=$argv[1];
@@ -38,6 +38,6 @@ if (is_null($dump_path)) {
 else {
     $src_csv_obj->dump($dump_path);
 }
-return 0;
+exit(0);
 
 ?>
