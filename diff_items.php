@@ -88,9 +88,6 @@ for ($src_row = $src_start_line; $src_row < $src_linenum; $src_row++) {
     if (is_null($dst_row)) {
         throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
     }
-    else if (is_null($dst_row)) {
-        throw new Exception('ERROR: dst0 can not find pkey: ' . $src_pkey);
-    }
 
     foreach ($json_array["params"] as $param) {
         $ret = $differs->do_diff($param, $relation_src, $src_row, $relation_dst, $dst_row);
