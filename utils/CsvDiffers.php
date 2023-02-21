@@ -101,6 +101,11 @@ Class CsvDiffers
             }
         }
         $dst_value = $dst_obj->value($dst_row, $dst_path);
+        if ($combined_value === "") {
+            if (is_null($dst_value)) {
+                return 0;
+            }
+        }        
         if (is_null($dst_value)) {
             printf("ERROR: not found src_row=%d src_path=%s dst_row=%d dst_path\n", 
                 $src_row, $src_path, $dst_row, $dst_path);
