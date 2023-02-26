@@ -13,6 +13,9 @@ Class CsvDiffers
         if (strcmp($conv_type, "normal") == 0) {
             return $this->conv_normal($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "fixed") == 0) {
+            return $this->conv_fixed($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else if (strcmp($conv_type, "combine1") == 0) {
             return $this->conv_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
@@ -50,6 +53,29 @@ Class CsvDiffers
         $src_value = $src_obj->value($src_row, $src_path);
         $dst_value = $dst_obj->value($dst_row, $dst_path);
         return $this->do_check($src_row, $dst_row, $src_value, $dst_value);
+    }
+    private function conv_fixed($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $env_param_name = $param["name"]."_fixed_value";
+        $fixed_value = getenv($env_param_name, $local_only = true);
+        if (($fixed_value === false) || empty($fixed_value)) {
+            $fixed_value =$param["value"];
+        }
+        $dst_path = $param["dst_path"];
+
+        $dst_value = $dst_obj->value($dst_row, $dst_path);
+        if (strcmp($fixed_value, $dst_value) != 0) {
+            printf("DIFF: dst_line=%d fixed_value=%s dst_value=%s\n",
+                $dst_row, $fixed_value, $dst_value);
+            return 1;
+        }
+        else {
+            if ($this->is_debug) {
+                printf("PASSED: dst_line=%d fixed_value=%s dst_value=%s\n",
+                    $dst_row, $fixed_value, $dst_value);
+            }
+            return 0;
+        }
     }
     private function conv_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
