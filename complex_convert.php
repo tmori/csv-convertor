@@ -79,11 +79,21 @@ for ($i = $start_line_src; $i < $src_csv_obj->linenum(); $i++) {
             $dst_csv_obj->set_value($dst_row, $dst_inx, $src_value);
         }
         else if (strcmp($conv_type, "fixed") == 0) {
-            $dst_value = $value["value"];
+            if (isset($value["name"])) {
+                $env_param_name = $value["name"]."_fixed_value";
+                $fixed_value = getenv($env_param_name, $local_only = true);
+                if (($fixed_value === false) || empty($fixed_value)) {
+                    $fixed_value = $value["value"];
+                }
+            }
+            else {
+                $fixed_value = $value["value"];
+            }
+    
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);
             #print("INFO: SETTING ");
             #print("dst[" . $dst_row . "][" . $dst_inx .  "]='" . $dst_value . "'\n");
-            $dst_csv_obj->set_value($dst_row, $dst_inx, $dst_value);
+            $dst_csv_obj->set_value($dst_row, $dst_inx, $fixed_value);
         }
         else if (strcmp($conv_type, "serial") == 0) {
             $dst_inx = $dst_csv_obj->colinx($value["dst"]);

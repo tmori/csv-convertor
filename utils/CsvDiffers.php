@@ -56,10 +56,15 @@ Class CsvDiffers
     }
     private function conv_fixed($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
-        $env_param_name = $param["name"]."_fixed_value";
-        $fixed_value = getenv($env_param_name, $local_only = true);
-        if (($fixed_value === false) || empty($fixed_value)) {
-            $fixed_value =$param["value"];
+        if (isset($param["name"])) {
+            $env_param_name = $param["name"]."_fixed_value";
+            $fixed_value = getenv($env_param_name, $local_only = true);
+            if (($fixed_value === false) || empty($fixed_value)) {
+                $fixed_value = $param["value"];
+            }
+        }
+        else {
+            $fixed_value = $param["value"];
         }
         $dst_path = $param["dst_path"];
 
