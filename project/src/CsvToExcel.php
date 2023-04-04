@@ -29,7 +29,9 @@ class CsvToExcel {
         $colnum = count($record);
         for ($i = 0; $i < $colnum; $i++) {
             $value = $record[$i];
-            $this->objSheet->setCellValueByColumnAndRow($i+1, $row, $value);
+            $cellAddress = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i+1) . strval($row);
+            $this->objSheet->setCellValueExplicit($cellAddress, strval($value),  \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            //$this->objSheet->setCellValueByColumnAndRow($i+1, $row, $value);
         }
     }
 

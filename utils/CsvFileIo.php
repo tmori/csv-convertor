@@ -88,6 +88,20 @@ Class CsvFileIo
         }
         return $ret;
     }
+    public function get_colinx_array_error_skip($pkey_columns)
+    {
+        $ret = array();
+        foreach ($pkey_columns as $pkey_col) {
+            try {
+                $inx = $this->colinx($pkey_col);
+            }
+            catch (Exception) {
+                continue;
+            }
+            array_push($ret, $this->colinx($pkey_col));
+        }
+        return $ret;
+    }
     public function line($row)
     {
         $row_int = (int)$row;
@@ -375,7 +389,7 @@ Class CsvFileIo
     }
     public function diff_with_exclude($pkey_columns, $start_line, $new_csv_obj, $dump_dir, $exclude_cols)
     {
-        $col_inx_array = $this->get_colinx_array($exclude_cols);
+        $col_inx_array = $this->get_colinx_array_error_skip($exclude_cols);
         $start_line_int = (int)$start_line;
         $this->dump($dump_dir . "/same.csv");
         $this->dump($dump_dir . "/create.csv");

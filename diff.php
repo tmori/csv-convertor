@@ -26,8 +26,14 @@ print("INFO: NEW LINENUM=" . $new_csv_obj->linenum() . "\n");
 print("INFO: NEW COLNUM=" . $new_csv_obj->colnum() . "\n");
 
 if ($old_csv_obj->colnum() != $new_csv_obj->colnum()) {
-    print("ERROR: old-csv's colnum != new-csv's colnum\n");
-    return 1;
+    if (isset($json_array["exclude_cols"])) {
+        //NOP
+        print("ERROR: old-csv's colnum != new-csv's colnum\n");
+    }
+    else {
+        print("ERROR: old-csv's colnum != new-csv's colnum\n");
+        return 1;
+    }
 }
 $old_csv_obj->shrink();
 $new_csv_obj->shrink();
