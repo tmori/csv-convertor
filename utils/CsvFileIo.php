@@ -169,6 +169,18 @@ Class CsvFileIo
         }
         return true;
     }
+    public function isEqualWithExcludeCols($src, $dst, $col_inx_array)
+    {
+        for ($i = 0; $i < $this->colnum(); $i++) {
+            if (in_array($i, $col_inx_array)) {
+                continue;
+            }
+            if (strcmp($src[$i], $dst[$i]) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
     public function insert($line)
     {
         #print(var_dump($line));
@@ -332,6 +344,65 @@ Class CsvFileIo
             }
             else {
                 if ($this->isEqual($this->line($i), $new_csv_obj->line($row))) {
+                    $same_csv_obj->insert($this->line($i));
+                }
+                else {
+                    $update_old_csv_obj->insert($this->line($i));
+                    $update_new_csv_obj->insert($new_csv_obj->line($row));
+                }
+            }
+        }
+        $new_num = $new_csv_obj->linenum();
+        for ($i = $start_line_int; $i < $new_num; $i++) {
+            $is_found = false;
+            $pkey1 = $new_csv_obj->get_pkeys($i, $pkey_columns);
+            $row = $this->get_value_by_pkey_with_cache($pkey1);
+            if (is_null($row)) {
+                //created
+                $create_csv_obj->insert($new_csv_obj->line($i));
+            }
+            else {
+                //nothing to do
+            }
+        }
+        $same_csv_obj->dump($dump_dir . "/same.csv");
+        $create_csv_obj->dump($dump_dir . "/create.csv");
+        $delete_csv_obj->dump($dump_dir . "/delete.csv");
+        $update_old_csv_obj->dump($dump_dir . "/update-old.csv");
+        $update_new_csv_obj->dump($dump_dir . "/update-new.csv");
+
+        return true;
+    }
+    public function diff_with_exclude($pkey_columns, $start_line, $new_csv_obj, $dump_dir, $exclude_cols)
+    {
+        $col_inx_array = $this->get_colinx_array($exclude_cols);
+        $start_line_int = (int)$start_line;
+        $this->dump($dump_dir . "/same.csv");
+        $this->dump($dump_dir . "/create.csv");
+        $this->dump($dump_dir . "/delete.csv");
+        $this->dump($dump_dir . "/update-old.csv");
+        $this->dump($dump_dir . "/update-new.csv");
+        
+        $same_csv_obj = new CsvFileIo($dump_dir . "/same.csv");
+        $same_csv_obj->splice_all($start_line_int);
+        $create_csv_obj = new CsvFileIo($dump_dir . "/create.csv");
+        $create_csv_obj->splice_all($start_line_int);
+        $delete_csv_obj = new CsvFileIo($dump_dir . "/delete.csv");
+        $delete_csv_obj->splice_all($start_line_int);
+        $update_old_csv_obj = new CsvFileIo($dump_dir . "/update-old.csv");
+        $update_old_csv_obj->splice_all($start_line_int);
+        $update_new_csv_obj = new CsvFileIo($dump_dir . "/update-new.csv");
+        $update_new_csv_obj->splice_all($start_line_int);
+        $num = $this->linenum();
+        for ($i = $start_line_int; $i < $num; $i++) {
+            $pkey1 = $this->get_pkeys($i, $pkey_columns);
+            $row = $new_csv_obj->get_value_by_pkey_with_cache($pkey1);
+            if (is_null($row)) {
+                //deleted
+                $delete_csv_obj->insert($this->line($i));
+            }
+            else {
+                if ($this->isEqualWithExcludeCols($this->line($i), $new_csv_obj->line($row), $col_inx_array)) {
                     $same_csv_obj->insert($this->line($i));
                 }
                 else {

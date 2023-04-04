@@ -38,7 +38,12 @@ $new_csv_obj->create_cache($json_array["start_line"], $new_csv_obj->get_colinx_a
 #$old_csv_obj->validate_pkeys($old_csv_obj->get_colinx_array($json_array["pkeys"]));
 #$new_csv_obj->validate_pkeys($new_csv_obj->get_colinx_array($json_array["pkeys"]));
 
-$old_csv_obj->diff($old_csv_obj->get_colinx_array($json_array["pkeys"]), $json_array["start_line"], $new_csv_obj, $dump_dir);
+if (isset($json_array["exclude_cols"])) {
+    $old_csv_obj->diff_with_exclude($old_csv_obj->get_colinx_array($json_array["pkeys"]), $json_array["start_line"], $new_csv_obj, $dump_dir, $json_array["exclude_cols"]);
+}
+else {
+    $old_csv_obj->diff($old_csv_obj->get_colinx_array($json_array["pkeys"]), $json_array["start_line"], $new_csv_obj, $dump_dir);
+}
 exit(0);
 
 ?>
