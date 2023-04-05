@@ -1,0 +1,22 @@
+{
+    "start_line": 1,
+    "validation_rules": [
+        {
+            "col1": {
+                "type": "integer",
+                "min": 1,
+                "max": 10,
+                "NULL": false
+            }
+        },
+        { 
+            "col2": {
+                "type": "string",
+                "min": 1,
+                "max": 2,
+                "reg": "/^[a-z]+$/",
+                "NULL": false
+            }    
+        }
+    ]
+}
