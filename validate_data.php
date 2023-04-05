@@ -15,9 +15,11 @@ $validator = new DataValidator($validation_spec, $csv_obj);
 $ret = $validator->validate();
 if ($ret == false) {
     printf("FAILED\n");
+    exit(1);
 }
 else {
     printf("PASSED\n");
+    exit(0);
 }
-exit($ret)
+
 ?>

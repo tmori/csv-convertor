@@ -2,21 +2,31 @@
     "start_line": 1,
     "validation_rules": [
         {
-            "col1": {
+            "level": {
                 "type": "integer",
                 "min": 1,
-                "max": 10,
+                "max": 4,
                 "NULL": false
             }
         },
         { 
-            "col2": {
+            "id": {
+                "type": "string",
+                "reg_format1": "/^[a-zA-Z0-9]{%d}$/",
+                "reg_format1_colvalue": "level",
+                "NULL": false
+            }
+        },
+        { 
+            "name": {
                 "type": "string",
                 "min": 1,
-                "max": 2,
-                "reg": "/^[a-z]+$/",
-                "NULL": false
-            }    
+                "max": 4,
+                "NULL": {
+                    "colvalue": "level",
+                    "false": [ 1, 2 ]
+                }
+            }
         }
     ]
 }

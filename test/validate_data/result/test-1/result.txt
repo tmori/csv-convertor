@@ -1,9 +1,1 @@
-FAILED, line number:    2, colname: col2, value: あいう, reason: string length over max:2
-FAILED, line number:    3, colname: col2, value: あい, reason: invalid string(valid regex:/^[a-z]+$/)
-FAILED, line number:    4, colname: col2, value: ccccc, reason: string length over max:2
-FAILED, line number:    5, colname: col1, value: 11, reason: value over max: 10
-FAILED, line number:    5, colname: col2, value: , reason: data is empty
-FAILED, line number:    6, colname: col1, value: 0, reason: value less min: 1
-FAILED, line number:    6, colname: col2, value: e-, reason: invalid string(valid regex:/^[a-z]+$/)
-FAILED, line number:    7, colname: col1, value: , reason: data is empty
-FAILED
+PASSED
