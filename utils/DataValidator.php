@@ -1,18 +1,15 @@
 <?php
-require('utils/json_loader.php');
 
 Class DataValidator
 {
-    private $validation_spec_file;
     private $validation_spec = array();
     private $csv_obj;
     private $success = true;
 
-    function __construct($validation_spec_file, $csv_obj)
+    function __construct($validation_spec, $csv_obj)
     {
         $this->csv_obj = $csv_obj;
-        $this->validation_spec_file = $validation_spec_file;
-        $this->validation_spec = load_json($validation_spec_file);
+        $this->validation_spec = $validation_spec;
     }
     private function print_error($row, $colname, $value, $reason, $rule)
     {
