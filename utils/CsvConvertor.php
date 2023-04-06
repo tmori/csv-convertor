@@ -36,6 +36,9 @@ Class CsvConvertor
         else if (strcmp($conv_type, "stroff") == 0) {
             $this->conv_stroff($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "substr") == 0) {
+            $this->conv_substr($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else {
             throw new Exception('ERROR: Not found conv_type=' . $conv_type);
         }
@@ -140,6 +143,15 @@ Class CsvConvertor
             }
         }
         $dst_obj->set_value($dst_row, $dst_path, $combined_value);
+    }
+    private function conv_substr($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $src_path =$param["src_path"];
+        $dst_path = $param["dst_path"];
+        $src_value = $src_obj->value($src_row, $src_path);
+
+        $next_value = substr($src_value, (int)$param["off"], (int)$param["size"]);;
+        $dst_obj->set_value($dst_row, $dst_path, $next_value);
     }
 }
 
