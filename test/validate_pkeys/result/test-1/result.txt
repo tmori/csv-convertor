@@ -1,0 +1,6 @@
+FAILED
+Array
+(
+    [0] => FAILED, line number: (   4 ,    6) , col index: 0, reason: FILE: ./test/validate_pkeys/data/test-1/test-data.csv has duplicate data
+    [1] => FAILED, line number: (   6 ,    4) , col index: 0, reason: FILE: ./test/validate_pkeys/data/test-1/test-data.csv has duplicate data
+)

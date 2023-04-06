@@ -14,9 +14,19 @@ $json_array = load_json($pkey_json);
 
 $csv_obj = new CsvFileIo($csv);
 
-$csv_obj->create_cache($json_array["start_line"], $csv_obj->get_colinx_array($json_array["pkeys"]));
-$csv_obj->validate_pkeys($csv_obj->get_colinx_array($json_array["pkeys"]));
+#$csv_obj->create_cache($json_array["start_line"], $csv_obj->get_colinx_array($json_array["pkeys"]));
 
-exit(0);
+$error_list = array();
+$success = $csv_obj->validate_pkeys($csv_obj->get_colinx_array($json_array["pkeys"]), $error_list);
+
+if ($success) {
+    printf("PASSED\n");
+    exit(0);
+}
+else {
+    printf("FAILED\n");
+    print_r($error_list);
+    exit(1);
+}
 
 ?>

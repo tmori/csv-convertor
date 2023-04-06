@@ -447,8 +447,9 @@ Class CsvFileIo
         return true;
     }
 
-    public function validate_pkeys($pkey_columns)
+    public function validate_pkeys($pkey_columns, &$error_list = null)
     {
+        $success = true;
         $num = $this->linenum();
         for ($i = 0; $i < $num; $i++) {
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
@@ -458,11 +459,17 @@ Class CsvFileIo
                 }
                 $pkey2 = $this->get_pkeys($j, $pkey_columns);
                 if (strcmp($pkey1, $pkey2) == 0) {
-                    throw new Exception('ERROR: Invalid table same pkey is found in row ' . strval($i) . ' and ' . strval($j) . ' pkey=' . $pkey1);
+                    if (isset($error_list)) {
+                        $reason = "FILE: " . $this->filepath . " has duplicate data";
+                        $error_msg = sprintf("FAILED, line number: (%4d , %4d) , col index: %s, reason: %s", 
+                            $i + +$this->start_line, $j + $this->start_line, implode($pkey_columns), $reason);
+                        array_push($error_list, $error_msg);    
+                    }
+                    $success = false;
                 }
             }
         }
-        return true;
+        return $success;
     }
     public function get_row($start_line, $keyword, $index)
     {
