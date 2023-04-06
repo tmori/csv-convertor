@@ -5,7 +5,7 @@ require('utils/CsvFileIo.php');
 
 
 if ($argc != 4) {
-    print("USAGE: " . $argv[0] . " <map-json> <parent-csv> <child-csv>\n");
+    print("USAGE: " . $argv[0] . " <validation-spec-json> <parent-csv> <child-csv>\n");
     exit(1);
 }
 
@@ -22,7 +22,6 @@ $start_line_parent = $json_array["start_line_parent"];
 $start_line_child = $json_array["start_line_child"];
 $parent_pkey_cols = $parent_csv_obj->get_colinx_array($json_array["parent_pkey_cols"]);
 $child_fkey_cols = $child_csv_obj->get_colinx_array($json_array["child_fkey_cols"]);
-$child_dst_col = $child_csv_obj->colinx($json_array["child_dst_col"]);
 
 $parent_csv_obj->create_cache($start_line_parent, $parent_pkey_cols);
 
@@ -37,7 +36,7 @@ for ($i = $start_line_child; $i < $child_csv_obj->linenum(); $i++) {
         else {
             $success = false;
             $reason = "FILE: " . $parent_csv . " does not have reference data";
-            printf("FAILED, line number: %4d, colname: %s, reason: %s\n", $i + $start_line_parent, $keyword, $reason);
+            printf("FAILED, line number: %4d, reference data: %s, reason: %s\n", $i + $start_line_parent, $keyword, $reason);
         }
     }
     else {
