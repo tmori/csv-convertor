@@ -447,12 +447,15 @@ Class CsvFileIo
         return true;
     }
 
-    public function validate_pkeys($pkey_columns, &$error_list = null)
+    public function validate_pkeys($pkey_columns, &$error_list = null, $skip_empty = false)
     {
         $success = true;
         $num = $this->linenum();
         for ($i = 0; $i < $num; $i++) {
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
+            if (($skip_empty == true) && (isset($pkey1) == false)) {
+                continue;
+            }
             for ($j = 0; $j < $num; $j++) {
                 if ($j == $i) {
                     continue;
