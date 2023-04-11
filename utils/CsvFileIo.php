@@ -521,6 +521,21 @@ Class CsvFileIo
             }
         }
     }
+    public function to_json()
+    {
+        $json_array = array();
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
+            $record_json_array = array();
+            for ($j = 0; $j < $this->colnum(); $j++) {
+                $colname = $this->value(0, $j);
+                $value = $this->value($i, $j);
+                $record_json_array = array_merge($record_json_array, [$colname => $value]);
+            }
+            array_push($json_array, $record_json_array);
+        }
+        return json_encode($json_array);
+    }
 
     public function dump_with_double_quote($dump_filepath = "./dump.csv")
     {
