@@ -22,6 +22,7 @@
                 "type": "string",
                 "min": 1,
                 "max": 4,
+                "encode_type": "UTF-8",
                 "NULL": {
                     "colvalue": "level",
                     "false": [ 1, 2 ]

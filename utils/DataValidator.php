@@ -66,6 +66,19 @@ Class DataValidator
                 return false;
             }
         }
+        if (array_key_exists('encode_type', $rule[$colname])) {
+            $encode_type = $rule[$colname]['encode_type'];
+            $encoding = mb_detect_encoding($value, $encode_type);
+            if ($encoding === false) {
+                $this->print_error($row, $colname, $value, "invalid string(mojibake1)", $rule);
+                return false;
+            }
+            $converted_string = mb_convert_encoding($value, $encode_type, $encoding);
+            if ($converted_string !== $value) {
+                $this->print_error($row, $colname, $value, "invalid string(mojibake2)", $rule);
+                return false;
+            }
+        }
         return true;
     }
 
