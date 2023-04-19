@@ -18,7 +18,7 @@ $json_array = load_json($pkey_json);
 
 $csv_obj = new CsvFileIo($csv);
 
-#$csv_obj->create_cache($json_array["start_line"], $csv_obj->get_colinx_array($json_array["pkeys"]));
+$csv_obj->create_cache_for_dup($json_array["start_line"], $csv_obj->get_colinx_array($json_array["pkeys"]));
 
 $error_list = array();
 $success = $csv_obj->validate_pkeys($csv_obj->get_colinx_array($json_array["pkeys"]), $error_list, $skip_empty);

@@ -6,6 +6,7 @@ Class CsvFileIo
     private $lines = array();
     private $colnum;
     private $map_pkeys = array();
+    private $map_pkeys_for_dup = array();
     private $pkey_columns = NULL;
     private $start_line = 1;
     
@@ -451,29 +452,50 @@ Class CsvFileIo
     {
         $success = true;
         $num = $this->linenum();
-        for ($i = 0; $i < $num; $i++) {
+        $start_line_int = (int)$this->start_line;
+        for ($i = $start_line_int; $i < $num; $i++) {
             $pkey1 = $this->get_pkeys($i, $pkey_columns);
             if (($skip_empty == true) && (isset($pkey1) == false)) {
                 continue;
             }
-            for ($j = 0; $j < $num; $j++) {
-                if ($j == $i) {
-                    continue;
-                }
-                $pkey2 = $this->get_pkeys($j, $pkey_columns);
-                if (strcmp($pkey1, $pkey2) == 0) {
-                    if (isset($error_list)) {
+            if (count($this->map_pkeys_for_dup[$pkey1]) >= 2) {
+                if (isset($error_list)) {
+                    foreach ($this->map_pkeys_for_dup[$pkey1] as $j) {
+                        if ($j === $i) {
+                            continue;
+                        }
                         $reason = "FILE: " . $this->filepath . " has duplicate data";
                         $error_msg = sprintf("FAILED, line number: (%4d , %4d) , col index: %s, reason: %s", 
                             $i + +$this->start_line, $j + $this->start_line, implode($pkey_columns), $reason);
                         array_push($error_list, $error_msg);    
                     }
-                    $success = false;
                 }
+                $success = false;
             }
         }
         return $success;
     }
+    public function create_cache_for_dup($start_line, $pkey_columns)
+    {
+        #printf("pkey_comuns=%s\n", $pkey_columns[0]);
+        $this->pkey_columns = $pkey_columns;
+        $start_line_int = (int)$start_line;
+        $this->set_start_line($start_line_int);
+        $num = $this->linenum();
+        for ($i = $start_line_int; $i < $num; $i++) {
+            $mykey = $this->get_pkeys($i, $pkey_columns);
+            #printf("%s\n", $mykey);
+            if (isset($this->map_pkeys_for_dup[$mykey])) {
+                array_push($this->map_pkeys_for_dup[$mykey], $i);
+            }
+            else {
+                $tmp_array = array();
+                array_push($tmp_array, $i);
+                $this->map_pkeys_for_dup[$mykey] = $tmp_array;
+            }
+        }
+    }
+
     public function get_row($start_line, $keyword, $index)
     {
         $index_int = (int)$index;
