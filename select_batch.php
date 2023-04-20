@@ -31,8 +31,14 @@ $csv_obj->create_cache($start_line, $csv_obj->get_colinx_array([$colname]));
 $select_obj = new CsvFileIo($dump_path);
 $select_obj->splice_all($start_line);
 
-$cond_values_csv_obj = new CsvFileIo($cond_values_file);
-$cond_values_num = $cond_values_csv_obj->linenum();
+$lines = file($cond_values_file);
+if (count($lines) == 0) {
+    $cond_values_num = 0;
+} else {
+    $cond_values_csv_obj = new CsvFileIo($cond_values_file);
+    $cond_values_num = $cond_values_csv_obj->linenum();
+}
+
 
 for ($k = 0; $k < $cond_values_num; $k++) {
     $cond_value = $cond_values_csv_obj->value($k, 0);
