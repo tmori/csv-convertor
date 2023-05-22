@@ -59,6 +59,18 @@ Class CsvFileIo
         }
         return;
     }
+    public function del_col($colinx)
+    {
+        if ($colinx >= $this->colnum) {
+            throw new Exception('ERROR: colinx over colnum('. strval($this->colnum) . '): can not del colinx=' . strval($colinx));
+        }
+        $num = $this->linenum();
+        for ($i = 0; $i < $num; $i++) {
+            array_splice($this->lines[$i], $colinx, 1);
+        }
+        $this->colnum--;
+        return;
+    }
     public function linenum()
     {
         return count($this->lines);
