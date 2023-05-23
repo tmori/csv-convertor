@@ -22,6 +22,9 @@ Class CsvDiffers
         else if (strcmp($conv_type, "combine2") == 0) {
             return $this->conv_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "cond_combine2") == 0) {
+            return $this->conv_cond_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else if (strcmp($conv_type, "stroff") == 0) {
             return $this->conv_stroff($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
@@ -107,6 +110,40 @@ Class CsvDiffers
             $param["combine_format"], 
             $src0_value, $src1_value
         );
+        #printf("comvined_value=%s\n", $combined_value);
+        $dst_value = $dst_obj->value($dst_row, $dst_path);
+        return $this->do_check($src_row, $dst_row, $combined_value, $dst_value);
+    }
+    private function conv_cond_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $src0_path =$param["src_combine_paths"][0];
+        $src1_path =$param["src_combine_paths"][1];
+        $dst_path = $param["dst_path"];
+        $src0_value = $src_obj->value($src_row, $src0_path);
+        $src1_value = $src_obj->value($src_row, $src1_path);
+
+        $src_cond_path =$param["src_cond_path"];
+        $src_cond_values = $param["src_cond_values"];
+        $src_cond_value = $src_obj->value($src_row, $src_cond_path);
+        $is_hit = False;
+        foreach ($src_cond_values as $cond_value) {
+            if (strpos($src_cond_value, $cond_value) !== false) {
+                $is_hit = True;
+                break;
+            }
+        }
+        if ($is_hit) {
+            $combined_value = sprintf(
+                $param["src_combine_format_true"], 
+                $src0_value, $src1_value
+            );    
+        }
+        else {
+            $combined_value = sprintf(
+                $param["src_combine_format_false"], 
+                $src0_value, $src1_value
+            );    
+        }
         #printf("comvined_value=%s\n", $combined_value);
         $dst_value = $dst_obj->value($dst_row, $dst_path);
         return $this->do_check($src_row, $dst_row, $combined_value, $dst_value);

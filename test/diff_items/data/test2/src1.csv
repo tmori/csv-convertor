@@ -1,0 +1,5 @@
+id,user_name,code,email
+99119,車寅次郎,0001,trajiro@example.com
+99120,小津安二郎,DELETED_0002,yasujiro@example.com
+99121,武田信玄,NOT_FOUND_0003,shingen@example.com
+99122,上杉謙信,DELETED_NOT_FOUND_0004,kenshin@example.com

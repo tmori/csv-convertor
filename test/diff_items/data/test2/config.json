@@ -1,0 +1,34 @@
+{
+	"srcs": [
+        {
+            "src1": { 
+                "comment": "dsts の第一要素と連携する",
+                "filepath": "./test/diff_items/data/test2/src1.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        }
+    ],
+    "dsts": [
+        {
+            "src2": {
+                "filepath": "./test/diff_items/data/test2/src2.csv",
+                "start_line": 1,
+                "pkeys": [ "id" ] 
+            }
+        }
+    ],
+    "src_relations": [],
+    "dst_relations": [],
+    "params": [
+        {
+            "conv_type": "cond_combine2",
+            "src_cond_path": "src1/code",
+            "src_cond_values": [ "DELETED_", "NOT_FOUND_" ],
+            "src_combine_format_true": "DISABLED_%s(%s)",
+            "src_combine_format_false": "%s(%s)",
+            "src_combine_paths": [ "src1/user_name", "src1/id" ],
+            "dst_path": "src2/user_name"
+        }
+    ]
+}
