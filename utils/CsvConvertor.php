@@ -116,16 +116,27 @@ Class CsvConvertor
     }
     private function conv_cond_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
-        $src_conv_path =$param["src_conv_path"];
-        $src_path =$param["src_path"];
+        $src_exclude_values = $param["src_exclude_values"];
+        $src_exclude_path = $param["src_exclude_path"];
+
+        $src_exclude_value = $src_obj->value($src_row, $src_exclude_path);
+        foreach ($src_exclude_values as $exclude_value) {
+            if (strpos($src_exclude_value, $exclude_value) !== false) {
+                // nothing to do
+                return;
+            }
+        }
+
+        $src_cond_path =$param["src_cond_path"];
+        $src_combine_path =$param["src_combine_path"];
+        $src_cond_values = $param["src_cond_values"];
         $dst_path = $param["dst_path"];
-        $cond_values = $param["cond_values"];
-        $src_conv_value = $src_obj->value($src_row, $src_conv_path);
-        $src_value = $src_obj->value($src_row, $src_path);
-        foreach ($cond_values as $cond_value) {
-            if (strpos($src_conv_value, $cond_value) !== false) {
+        $src_cond_value = $src_obj->value($src_row, $src_cond_path);
+        $src_value = $src_obj->value($src_row, $src_combine_path);
+        foreach ($src_cond_values as $cond_value) {
+            if (strpos($src_cond_value, $cond_value) !== false) {
                 $combined_value = sprintf(
-                    $param["combine_format"], 
+                    $param["src_combine_format"], 
                     $src_value
                 );
                 $dst_obj->set_value($dst_row, $dst_path, $combined_value);

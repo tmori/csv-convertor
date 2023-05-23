@@ -24,12 +24,13 @@
     "params": [
         {
             "conv_type": "cond_combine1",
-            "src_conv_path": "input/user_code",
-            "src_path": "input/user_name",
-            "cond_expr": "include",
-            "cond_values": [ "DELETED_", "NOT_FOUND_" ],
-            "dst_path": "out1/user_name",
-            "combine_format": "DISABLED_%s"
+            "src_cond_path": "input/user_code",
+            "src_cond_values": [ "DELETED_", "NOT_FOUND_" ],
+            "src_exclude_values": [ "DISABLED_" ],
+            "src_exclude_path": "input/user_name",
+            "src_combine_format": "DISABLED_%s",
+            "src_combine_path": "input/user_name",
+            "dst_path": "out1/user_name"
         }
     ]
 }

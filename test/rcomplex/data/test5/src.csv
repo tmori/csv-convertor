@@ -1,5 +1,5 @@
 id,user_name,user_code,email,colb
-99119,tmori1(abc_efg),NOT_FOUND_xxx,trajiro@example.com,97
+99119,DISABLED_tmori1(abc_efg),NOT_FOUND_xxx,trajiro@example.com,97
 99129,tmori2(abc_efg),NOT_FOUND_xxxx,trajiro@example.com,97
 99139,tmori3(abc_efg),DELETED_xxx,trajiro@example.com,97
 99149,tmori4(abc_efg),DELETED_NOT_FOUND_XXX,trajiro@example.com,97
