@@ -31,6 +31,15 @@
             "src_combine_format": "DISABLED_%s",
             "src_combine_path": "input/user_name",
             "dst_path": "out1/user_name"
+        },
+        {
+            "conv_type": "cond_combine2",
+            "src_cond_path": "input/user_code",
+            "src_cond_values": [ "NOT_FOUND_" ],
+            "src_combine_format_true": "DISABLED_%s(%s)",
+            "src_combine_format_false": "%s(%s)",
+            "src_combine_paths": [ "input/email", "input/colb" ],
+            "dst_path": "out1/email"
         }
     ]
 }

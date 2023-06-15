@@ -33,6 +33,9 @@ Class CsvConvertor
         else if (strcmp($conv_type, "cond_combine1") == 0) {
             $this->conv_cond_combine1($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
+        else if (strcmp($conv_type, "cond_combine2") == 0) {
+            $this->conv_cond_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row);
+        }
         else if (strcmp($conv_type, "combine2") == 0) {
             $this->conv_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row);
         }
@@ -143,6 +146,39 @@ Class CsvConvertor
                 break;
             }
         }
+    }
+    private function conv_cond_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row)
+    {
+        $src_cond_path =$param["src_cond_path"];
+        $src0_combine_path =$param["src_combine_paths"][0];
+        $src1_combine_path =$param["src_combine_paths"][1];
+
+        $src_cond_values = $param["src_cond_values"];
+        $dst_path = $param["dst_path"];
+        $src_cond_value = $src_obj->value($src_row, $src_cond_path);
+        $src0_value = $src_obj->value($src_row, $src0_combine_path);
+        $src1_value = $src_obj->value($src_row, $src1_combine_path);
+
+        $cond_check_result = false;
+        foreach ($src_cond_values as $cond_value) {
+            if (strpos($src_cond_value, $cond_value) !== false) {
+                $cond_check_result = true;
+                break;
+            }
+        }
+        if ($cond_check_result) {
+            $combined_value = sprintf(
+                $param["src_combine_format_true"], 
+                $src0_value, $src1_value
+            );    
+        }
+        else {
+            $combined_value = sprintf(
+                $param["src_combine_format_false"], 
+                $src0_value, $src1_value
+            );
+        }
+        $dst_obj->set_value($dst_row, $dst_path, $combined_value);
     }
     private function conv_combine2($param, $src_obj, $src_row, $dst_obj, $dst_row)
     {
