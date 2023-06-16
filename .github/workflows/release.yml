@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: |
+          mkdir csv-converter \
+            && cp *.php csv-converter \
+            && cp *.bash csv-converter \
+            && cp -r config csv-converter \
+            && cp -r project csv-converter \
+            && cp -r utils csv-converter \
+            && tar -zcf csv-converter.tar.gz csv-converter
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: csv-converter.tar.gz
+

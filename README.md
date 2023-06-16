@@ -324,3 +324,12 @@ php ./add_double_quote.php ./dump.csv
 "1","99119","trajiro","寅次郎(st_99119)","trajiro@example.com","0"
 "","99120","yasujiro","小津安二郎(st_99120)","yasujiro@example.com","0"
 ```
+
+# リリース
+
+下記を実行してください。
+自動でGitHubにリリースが作成され、成果物(csv-converter.tar.gz)がアップロードされます。
+```sh
+$bash release.bash
+```
+
